@@ -33,7 +33,7 @@ jobs:
         pip install -e ".[dev]"
 
     - name: Check imports
-      run: python -c "import sys; sys.path.insert(0, 'src'); import netlist_generator; print('✓ All imports work')"
+      run: python -c "import sys; sys.path.insert(0, 'src'); import spice_netlist_parser; print('✓ All imports work')"
 
     - name: Check CLI
       run: python src/main.py --help > /dev/null && echo "✓ CLI works"
