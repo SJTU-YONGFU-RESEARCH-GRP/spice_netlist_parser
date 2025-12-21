@@ -312,7 +312,7 @@ def test_main_unknown_command_triggers_error(monkeypatch: MonkeyPatch) -> None:
             called["msg"] = message
             raise SystemExit(2)
 
-    monkeypatch.setattr(cli_main, "create_parser", lambda: FakeParser())
+    monkeypatch.setattr(cli_main, "create_parser", FakeParser)
 
     with pytest.raises(SystemExit):
         cli_main.main()

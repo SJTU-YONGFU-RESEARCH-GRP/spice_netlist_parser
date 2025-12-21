@@ -48,13 +48,13 @@ jobs:
         pip install deptry
         deptry src/ --ignore-missing-imports --ignore-unused-imports || true
 
-    - name: Generate test netlist
+    - name: Test SPICE parsing
       run: |
-        python src/main.py -t 3 -n 5 -o test_output.cir --seed 42
-        if [ -f test_output.cir ] && [ -s test_output.cir ]; then
-          echo "✓ Netlist generation works"
-          head -5 test_output.cir
+        PYTHONPATH=src python -m spice_netlist_parser.main parse examples/100.sp --output test_output.json --format json
+        if [ -f test_output.json ] && [ -s test_output.json ]; then
+          echo "✓ SPICE parsing works"
+          head -10 test_output.json
         else
-          echo "✗ Netlist generation failed"
+          echo "✗ SPICE parsing failed"
           exit 1
         fi

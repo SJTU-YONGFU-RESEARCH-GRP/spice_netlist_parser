@@ -364,7 +364,7 @@ class ASTBuilder:
                 value = self._render_function_call(child)
 
         # If value is still empty string, try to get from token
-        if value == "" and tree.children:
+        if not value and tree.children:
             first_child = tree.children[0]
             if isinstance(first_child, Token):
                 if first_child.type in ["NUMBER", "SCIENTIFIC", "SIGNED_NUMBER"]:
@@ -372,7 +372,7 @@ class ASTBuilder:
                         value = float(first_child.value)
                     except ValueError:
                         value = first_child.value
-                elif first_child.type in ("MODEL_NAME",):
+                elif first_child.type == "MODEL_NAME":
                     value = first_child.value
                 else:
                     value = first_child.value

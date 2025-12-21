@@ -24,20 +24,16 @@ def _netlist_with(extras: dict[str, Any]) -> Netlist:
 def test_diff_options_models_includes() -> None:
     """diff should report differences for options/models/includes."""
 
-    a = _netlist_with(
-        {
-            "models": {"M1": {"type": "NMOS", "parameters": {"l": 1}}},
-            "options": {"temp": 25},
-            "includes": ["a.inc"],
-        }
-    )
-    b = _netlist_with(
-        {
-            "models": {"M1": {"type": "NMOS", "parameters": {"l": 2}}},
-            "options": {"temp": 50},
-            "includes": ["b.inc"],
-        }
-    )
+    a = _netlist_with({
+        "models": {"M1": {"type": "NMOS", "parameters": {"l": 1}}},
+        "options": {"temp": 25},
+        "includes": ["a.inc"],
+    })
+    b = _netlist_with({
+        "models": {"M1": {"type": "NMOS", "parameters": {"l": 2}}},
+        "options": {"temp": 50},
+        "includes": ["b.inc"],
+    })
 
     diffs = RoundTripValidator().diff(a, b)
     assert any("models" in d or "options" in d or "includes" in d for d in diffs)
