@@ -36,7 +36,7 @@ jobs:
       run: python -c "import sys; sys.path.insert(0, 'src'); import spice_netlist_parser; print('✓ All imports work')"
 
     - name: Check CLI
-      run: python src/main.py --help > /dev/null && echo "✓ CLI works"
+      run: PYTHONPATH=src python -m spice_netlist_parser.main --help > /dev/null && echo "✓ CLI works"
 
     - name: Run pre-commit hooks
       run: |
