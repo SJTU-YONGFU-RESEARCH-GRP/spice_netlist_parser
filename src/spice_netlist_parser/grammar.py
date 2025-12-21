@@ -1,35 +1,13 @@
 """SPICE netlist grammar definition for Lark parser."""
 
+# Clean baseline grammar: fixed arity for common primitives, generic fallback,
+# numeric values as SIGNED_NUMBER, node names starting with letter/underscore,
+# and compact param assignments via PARAM_ASSIGN.
+
 SPICE_GRAMMAR = r"""
-start: title_line? statement* ".END"
 
-title_line: /[^\n]+/
-
-statement: component_line
-         | model_line
-         | include_line
-         | option_line
-         | param_line
-         | subckt_line
-         | control_line
-
-// Function calls (e.g., SIN(...)) must be matched as a single token
-FUNCTION_CALL: /[A-Za-z_][A-Za-z0-9_]*\([^)]*\)/
-
-// Component definitions
-//
-// IMPORTANT:
-// Many SPICE primitives have a fixed node arity (e.g. R/C/L are 2-node).
-// Using a greedy `node+` list causes the value token (e.g. "25k") to be parsed
-// as a node, which breaks connectivity/sizing accuracy.
-//
-// We therefore use per-component rules with fixed node counts where possible.
-component_line: two_node_component
-             | diode_component
-             | mosfet_component
-             | bjt_component
-             | subckt_instance
-             | generic_component
+// Function calls captured as single token (e.g., SIN(0 8.6 8793))
+FUNCTION_CALL.5: /[A-Za-z_][A-Za-z0-9_]*\([^)]*\)/
 
 // Component names start with designator and must include at least one digit
 RESISTOR_NAME: /R[0-9][A-Za-z0-9_]*/
@@ -42,7 +20,27 @@ BJT_NAME: /Q[0-9][A-Za-z0-9_]*/
 DIODE_NAME: /D[0-9][A-Za-z0-9_]*/
 SUBCKT_INST_NAME: /X[0-9][A-Za-z0-9_]*/
 
+// Fallback component name (must come after specific primitives)
 COMPONENT_NAME: /[RCLVIMQDX][0-9][A-Za-z0-9_]*/
+
+start: NEWLINE* (statement NEWLINE*)* ".END"
+
+NEWLINE: /(\r?\n)+/
+
+statement: component_line
+         | model_line
+         | include_line
+         | option_line
+         | param_line
+         | subckt_line
+         | control_line
+
+// Component definitions (fixed arity)
+component_line: two_node_component
+             | diode_component
+             | mosfet_component
+             | bjt_component
+             | subckt_instance
 
 node2: node node
 node3: node node node
@@ -56,25 +54,26 @@ bjt_component: BJT_NAME node3 MODEL_NAME param_or_value*
              | BJT_NAME node4 MODEL_NAME param_or_value*
 subckt_instance: SUBCKT_INST_NAME node_list MODEL_NAME param_or_value*
 
-// Fallback (kept for flexibility; may be ambiguous for some custom elements)
-generic_component: COMPONENT_NAME node_list component_body?
+// Model names (simple identifier) but must not collide with component designators
+MODEL_NAME.1: /(?![RCLVIMQDX][0-9])[A-Za-z_][A-Za-z0-9_]*/
+
+// Parameter names (short) only when immediately followed by '='
+PARAM_NAME.3: /(?![RCLVIMQDX][0-9])(?![A-Za-z_][A-Za-z0-9_]*\()[A-Za-z_][A-Za-z0-9_]{0,3}(?==)/
 
 node: SIGNED_NUMBER | ZERO | NODE_NAME
 ZERO: "0"
-NODE_NAME: /[A-Za-z0-9_.]+/
+// Node names start with letter/underscore, avoid component designators, and must not be a function call (identifier followed by '(')
+NODE_NAME: /(?![RCLVIMQDX][0-9])(?![A-Za-z_][A-Za-z0-9_]*\()[A-Za-z_][A-Za-z0-9_.-]*/
 
-// Component body: optional leading model name followed by parameters/values
+// Component body: optional leading model name followed by parameters/values (FUNCTION_CALL handled via value)
 component_body: MODEL_NAME param_or_value*
               | param_or_value+
 
-param_or_value: parameter | value
-
-// Model names (allow typical identifier)
-MODEL_NAME: /[A-Za-z_][A-Za-z0-9_]*/
+// Allow compact param assignments like L=0.25u as a single token
+PARAM_ASSIGN.4: /[A-Za-z][A-Za-z0-9_]*=[^ \t\r\n]+/
+param_or_value: parameter | value | PARAM_ASSIGN
 
 parameter: PARAM_NAME "=" value
-// Parameter names (allow single-letter like L, W)
-PARAM_NAME: /[A-Za-z_][A-Za-z0-9_]*/
 
 value: FUNCTION_CALL
      | SIGNED_NUMBER
@@ -85,14 +84,13 @@ SIGNED_NUMBER: /[+-]?\d+(\.\d+)?([eE][+-]?\d+)?[A-Za-z]*/
 STRING: /"[^"]*"/
 
 // Model definitions
-model_line: ".MODEL" MODEL_NAME MODEL_TYPE_NAME model_params
-MODEL_TYPE_NAME: /[A-Za-z_][A-Za-z0-9_]*/
+model_line: ".MODEL" MODEL_NAME MODEL_NAME model_params
 model_params: "(" parameter* ")" | parameter*
 
 // Include directive
 include_line: ".INCLUDE" FILE_PATH
-// Avoid capturing parentheses that belong to function calls
-FILE_PATH: /"[^"]*"/ | /[^ \t\n=()]+/
+// File paths: quoted strings or paths containing slashes (exclude bare numbers)
+FILE_PATH: /"[^"]*"/ | /[^ \t\r\n=()]*\/[^ \t\r\n=()]*/
 
 // Option directive
 option_line: ".OPTION" parameter*
@@ -108,5 +106,6 @@ SUBCKT_NAME: /X[A-Za-z0-9_]+/
 control_line: ".OP" | ".DC" | ".AC" | ".TRAN" | ".END"
 
 %import common.WS
-%ignore WS
+// Ignore spaces/tabs; NEWLINE is used as a statement separator
+%ignore /[ \t]+/
 """

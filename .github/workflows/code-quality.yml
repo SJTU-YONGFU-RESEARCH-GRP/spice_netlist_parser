@@ -1,0 +1,60 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+
+    - name: Check imports
+      run: python -c "import sys; sys.path.insert(0, 'src'); import netlist_generator; print('✓ All imports work')"
+
+    - name: Check CLI
+      run: python src/main.py --help > /dev/null && echo "✓ CLI works"
+
+    - name: Run pre-commit hooks
+      run: |
+        pip install pre-commit
+        pre-commit run --all-files
+
+    - name: Check for unused dependencies
+      run: |
+        pip install deptry
+        deptry src/ --ignore-missing-imports --ignore-unused-imports || true
+
+    - name: Generate test netlist
+      run: |
+        python src/main.py -t 3 -n 5 -o test_output.cir --seed 42
+        if [ -f test_output.cir ] && [ -s test_output.cir ]; then
+          echo "✓ Netlist generation works"
+          head -5 test_output.cir
+        else
+          echo "✗ Netlist generation failed"
+          exit 1
+        fi

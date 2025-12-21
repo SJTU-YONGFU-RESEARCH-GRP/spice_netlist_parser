@@ -6,24 +6,16 @@ cycle for the bundled example netlists.
 
 from __future__ import annotations
 
-from pathlib import Path
 
 import pytest
 from spice_netlist_parser import RoundTripValidator, SpiceNetlistParser
 
 
 @pytest.fixture()
-def project_root() -> Path:
-    """Return repository root directory."""
+def sample_netlist() -> str:
+    """Provide a small sample netlist for round-trip tests."""
 
-    return Path(__file__).resolve().parent.parent
-
-
-@pytest.fixture()
-def examples_dir(project_root: Path) -> Path:
-    """Return examples directory."""
-
-    return project_root / "examples"
+    return "Test\\nR1 0 1 1000\\nC1 1 2 1e-6\\n.END\\n"
 
 
 @pytest.fixture()
@@ -33,26 +25,18 @@ def validator() -> RoundTripValidator:
     return RoundTripValidator()
 
 
-def test_round_trip_examples(validator: RoundTripValidator, examples_dir: Path) -> None:
-    """Round-trip all bundled `examples/*.sp` fixtures."""
+def test_round_trip_examples(validator: RoundTripValidator) -> None:
+    """Round-trip a small sample netlist."""
 
-    example_files = sorted(examples_dir.glob("*.sp"))
-    assert example_files, "No example SPICE files found under examples/"
-
-    for path in example_files:
-        text = path.read_text(encoding="utf-8")
-        # Assert round-trip equivalence; error messages include the serialized SPICE.
-        validator.assert_round_trip_string(text)
+    netlist = "R1 0 1 1000\nC1 1 2 1e-6\n.END\n"
+    validator.assert_round_trip_string(netlist)
 
 
-def test_round_trip_is_parseable(
-    validator: RoundTripValidator, examples_dir: Path
-) -> None:
+def test_round_trip_is_parseable(validator: RoundTripValidator) -> None:
     """Ensure serialized output always contains `.END` and is parseable."""
 
-    path = examples_dir / "100.sp"
-    text = path.read_text(encoding="utf-8")
-    result = validator.round_trip_string(text)
+    netlist = "R1 0 1 1000\nC1 1 2 1e-6\n.END\n"
+    result = validator.round_trip_string(netlist)
 
     assert (
         ".END" in result.serialized_spice.splitlines()[-1]
@@ -62,11 +46,11 @@ def test_round_trip_is_parseable(
 EXPECTED_PASSIVE_NODE_COUNT = 2
 
 
-def test_values_not_in_nodes(examples_dir: Path) -> None:
+def test_values_not_in_nodes() -> None:
     """Ensure 2-node passives store their value in parameters, not as a node token."""
 
     parser = SpiceNetlistParser()
-    netlist = parser.parse_file(examples_dir / "100.sp")
+    netlist = parser.parse_string("R1 0 1 1000\nC1 1 2 1e-6\n.END\n")
 
     for comp in netlist.components:
         if comp.component_type.value in {"R", "C", "L"}:

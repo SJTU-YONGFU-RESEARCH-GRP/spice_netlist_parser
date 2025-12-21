@@ -356,10 +356,12 @@ class ASTBuilder:
                         value = child.value
                 elif child.type == "STRING":
                     value = child.value.strip('"')
-                elif child.type in ("FUNCTION_CALL", "MODEL_NAME"):
+                elif child.type == "MODEL_NAME":
                     value = child.value
                 elif child.type == "unit":
                     unit = child.value
+            elif isinstance(child, Tree) and child.data == "function_call":
+                value = self._render_function_call(child)
 
         # If value is still empty string, try to get from token
         if value == "" and tree.children:
@@ -370,10 +372,12 @@ class ASTBuilder:
                         value = float(first_child.value)
                     except ValueError:
                         value = first_child.value
-                elif first_child.type in ("FUNCTION_CALL", "MODEL_NAME"):
+                elif first_child.type in ("MODEL_NAME",):
                     value = first_child.value
                 else:
                     value = first_child.value
+            elif isinstance(first_child, Tree) and first_child.data == "function_call":
+                value = self._render_function_call(first_child)
 
         return ValueNode(
             node_type=NodeType.VALUE,
@@ -400,7 +404,7 @@ class ASTBuilder:
                 value = float(token.value)
             except ValueError:
                 value = token.value
-        elif token.type in ("FUNCTION_CALL", "STRING", "MODEL_NAME"):
+        elif token.type in ("STRING", "MODEL_NAME"):
             value = token.value
         else:
             return None
@@ -413,6 +417,18 @@ class ASTBuilder:
             unit=unit,
         )
 
+    def _render_function_call(self, tree: Tree) -> str:
+        """Render a function_call tree back into string form."""
+        name = ""
+        args: list[str] = []
+        for child in tree.children:
+            if isinstance(child, Token) and child.type == "MODEL_NAME":
+                name = child.value
+            elif isinstance(child, Tree) and child.data == "func_arg_list":
+                args = [arg.value for arg in child.children if isinstance(arg, Token)]
+        args_text = " ".join(args)
+        return f"{name}({args_text})"
+
 
 class SpiceASTParser:
     """AST-based SPICE netlist parser using Lark."""
@@ -423,9 +439,10 @@ class SpiceASTParser:
             self.parser = Lark(
                 SPICE_GRAMMAR,
                 parser="lalr",
-                lexer="contextual",
+                lexer="basic",
                 propagate_positions=True,
                 maybe_placeholders=True,
+                start=["start", "component_line"],
             )
         except Exception as e:
             msg = f"Failed to initialize parser: {e}"
@@ -476,7 +493,35 @@ class SpiceASTParser:
             # Preprocess to handle continuation lines
             processed_text = self._preprocess_text(netlist_text)
 
-            tree = self.parser.parse(processed_text)
+            # First, try line-by-line component parsing (skipping directives).
+            statement_nodes: list[ASTNode] = []
+            failed = False
+            for raw_line in processed_text.splitlines():
+                line = raw_line.strip()
+                if not line:
+                    continue
+                if line.startswith("."):
+                    # Skip directives in this fallback path.
+                    continue
+                try:
+                    comp_tree = self.parser.parse(line, start="component_line")
+                    component_node = self.builder.build_component(comp_tree)
+                    statement_nodes.append(component_node)
+                except lark.exceptions.LarkError:
+                    failed = True
+                    break
+
+            if not failed and statement_nodes:
+                return NetlistNode(
+                    node_type=NodeType.NETLIST,
+                    line_number=1,
+                    position=0,
+                    title="Untitled",
+                    statements=statement_nodes,
+                )
+
+            # Fallback to full parse using the grammar start rule.
+            tree = self.parser.parse(processed_text, start="start")
             return self.builder.build_netlist(tree)
 
         except lark.exceptions.UnexpectedToken as e:
@@ -577,6 +622,17 @@ class SpiceASTParser:
                     current_line = ""
                 continue
 
+            # Skip title line: first non-empty, non-comment line that doesn't
+            # start with a known statement/component designator.
+            if (
+                not lines
+                and not current_line
+                and normalized
+                and normalized[0].upper()
+                not in {".", "R", "C", "L", "V", "I", "M", "Q", "D", "X", "B"}
+            ):
+                continue
+
             # Handle continuation lines (starting with +), allowing leading whitespace
             if normalized.startswith("+"):
                 continuation = normalized[1:].lstrip()
@@ -593,6 +649,7 @@ class SpiceASTParser:
         if current_line:
             lines.append(current_line)
 
+        # Join with newlines to preserve statement boundaries.
         return "\n".join(lines)
 
     @staticmethod

@@ -1,5 +1,10 @@
 # SPICE Netlist Parser
 
+[![CI](https://github.com/yourusername/spice-netlist-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/spice-netlist-parser/actions/workflows/ci.yml)
+[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![codecov](https://codecov.io/gh/yourusername/spice-netlist-parser/branch/main/graph/badge.svg)](https://codecov.io/gh/yourusername/spice-netlist-parser)
+
 A robust, AST-based parser for SPICE netlist files with comprehensive analysis and validation capabilities.
 
 ## Features
@@ -20,7 +25,7 @@ A robust, AST-based parser for SPICE netlist files with comprehensive analysis a
 ### From Source
 
 ```bash
-git clone https://github.com/yourusername/spice-netlist-parser.git
+git clone https://github.com/SJTU-YONGFU-RESEARCH-GRP/spice_netlist_parser.git
 cd spice-netlist-parser
 pip install -e .
 ```
@@ -35,22 +40,101 @@ pip install -e ".[dev]"
 
 ### Command Line Interface
 
+The parser provides a comprehensive CLI with multiple commands and output formats.
+
+#### Basic Parsing
+
 ```bash
-# Parse a netlist file
+# Parse a netlist file with default text output
 spice-parser parse circuit.sp
 
 # Parse with JSON output
 spice-parser parse circuit.sp --format json --output result.json
 
-# Compare two netlists
-spice-parser compare circuit1.sp circuit2.sp
+# Parse with summary output (brief overview)
+spice-parser parse circuit.sp --format summary
 
-# Perform round-trip validation
-spice-parser roundtrip circuit.sp --output normalized.sp
-
-# Show AST structure for debugging
+# Show detailed AST structure for debugging
 spice-parser parse circuit.sp --ast --verbose
 ```
+
+#### Netlist Comparison
+
+```bash
+# Compare two netlists semantically
+spice-parser compare circuit1.sp circuit2.sp
+
+# Compare with JSON output format
+spice-parser compare circuit1.sp circuit2.sp --format json --output comparison.json
+```
+
+#### Round-trip Validation
+
+```bash
+# Perform round-trip validation (parse → serialize → parse)
+spice-parser roundtrip circuit.sp
+
+# Save normalized netlist after round-trip validation
+spice-parser roundtrip circuit.sp --output normalized.sp
+```
+
+### Enhanced CLI Scripts
+
+The project includes additional convenience scripts for advanced usage:
+
+#### netlist_parser.sh - Enhanced Parser Script
+
+A wrapper script providing additional parsing and validation options:
+
+```bash
+# Basic parsing with verbose output
+./netlist_parser.sh examples/1k.sp
+
+# Round-trip validation
+./netlist_parser.sh examples/1k.sp --roundtrip
+
+# Round-trip validation with output file
+./netlist_parser.sh examples/1k.sp --roundtrip --roundtrip-output normalized.sp
+
+# Compare two netlists
+./netlist_parser.sh examples/1k.sp --compare examples/10k.sp
+
+# Compare with custom output
+./netlist_parser.sh examples/1k.sp --compare examples/10k.sp --compare-format json --compare-output report.json
+```
+
+#### check_quality.sh - Quality Assurance
+
+Run comprehensive quality checks before committing:
+
+```bash
+# Run all quality checks (linting, formatting, type checking, security, tests)
+./check_quality.sh
+```
+
+#### regression.sh - Regression Testing
+
+Run the parser against all example netlists for regression testing:
+
+```bash
+# Run regression tests on all examples
+./regression.sh
+
+# Run with additional parser arguments
+./regression.sh --verbose
+```
+
+### Example Files
+
+The `examples/` directory contains test netlists of various sizes:
+
+- `100.sp` - Small test circuit (~100 components)
+- `1k.sp` - Medium circuit (~1,000 components)
+- `10k.sp` - Large circuit (~10,000 components)
+- `100k.sp` - Very large circuit (~100,000 components)
+- `1m.sp` - Massive circuit (~1,000,000 components)
+
+Each example includes corresponding log files and JSON outputs for validation.
 
 ### Python API
 
@@ -93,31 +177,49 @@ export SPICE_PARSER_DEFAULT_FORMAT=json
 ```
 spice-netlist-parser/
 ├── src/
-│   ├── main.py                    # CLI entry point
-│   └── spice_netlist_parser/
-│       ├── __init__.py           # Package initialization
+│   └── spice_netlist_parser/      # Main package
+│       ├── __init__.py           # Package initialization and exports
 │       ├── parser.py             # Main parser interface
-│       ├── ast_parser.py         # AST-based parsing
+│       ├── ast_parser.py         # AST-based parsing logic
 │       ├── ast_nodes.py          # AST node definitions
-│       ├── visitors.py           # AST visitor pattern
-│       ├── models.py             # Domain models
-│       ├── serializer.py         # SPICE serialization
-│       ├── comparison.py         # Netlist comparison tools
-│       ├── roundtrip.py          # Round-trip validation
-│       ├── exceptions.py         # Custom exceptions
+│       ├── visitors.py           # AST visitor pattern implementations
+│       ├── models.py             # Domain models (Netlist, Component, etc.)
+│       ├── serializer.py         # SPICE netlist serialization
+│       ├── comparison.py         # Netlist comparison and diff tools
+│       ├── roundtrip.py          # Round-trip validation utilities
+│       ├── exceptions.py         # Custom exception classes
 │       ├── grammar.py            # SPICE grammar definition
 │       ├── config.py             # Configuration management
 │       ├── logging_config.py     # Logging configuration
-│       └── cli/
-│           ├── __init__.py       # CLI package
+│       └── cli/                  # Command-line interface
+│           ├── __init__.py       # CLI package init
+│           ├── __main__.py       # CLI module entry point
 │           └── commands.py       # CLI command implementations
-├── tests/                        # Unit tests
-├── pyproject.toml               # Project configuration
-├── requirements.txt             # Dependencies
-└── README.md                    # This file
+├── tests/                        # Comprehensive unit test suite
+├── examples/                     # Test netlists and validation data
+│   ├── *.sp                     # SPICE netlist files (100, 1k, 10k, 100k, 1m components)
+│   ├── *.json                   # Expected JSON outputs
+│   └── *.log                    # Validation logs
+├── htmlcov/                     # Test coverage reports
+├── pyproject.toml               # Project configuration (PEP 621)
+├── requirements.txt             # Legacy dependency file
+├── netlist_parser.sh            # Enhanced parser script with extra options
+├── check_quality.sh             # Quality assurance script
+├── regression.sh                # Regression testing script
+├── README.md                    # This file
+└── LICENSE                      # License file
 ```
 
 ## Development
+
+### Continuous Integration
+
+The project uses GitHub Actions for continuous integration with the following checks:
+
+- **Multi-Python Testing**: Tests run on Python 3.10, 3.11, and 3.12
+- **Code Quality**: Linting with Ruff, type checking with mypy, security scanning with bandit
+- **Test Coverage**: Code coverage reporting with Codecov
+- **Regression Testing**: Automated testing against all example netlists
 
 ### Running Tests
 
@@ -135,6 +237,11 @@ pytest tests/test_parser.py
 ### Code Quality
 
 ```bash
+# Run all quality checks (recommended)
+./check_quality.sh
+
+# Or run individual checks:
+
 # Lint and format code
 ruff check src/ tests/
 ruff format src/ tests/
@@ -148,12 +255,33 @@ bandit -r src/
 
 ### Pre-commit Hooks
 
+The project includes a comprehensive pre-commit configuration that mirrors the CI checks:
+
 ```bash
 # Install pre-commit hooks
 pre-commit install
 
 # Run on all files
 pre-commit run --all-files
+
+# Run on staged files only
+pre-commit run
+```
+
+The pre-commit hooks include:
+- Code formatting and linting with Ruff
+- Type checking with mypy
+- Security scanning with bandit
+- General file quality checks
+
+### Regression Testing
+
+```bash
+# Run parser against all example netlists
+./regression.sh
+
+# Run with additional arguments
+./regression.sh --verbose
 ```
 
 ## Supported SPICE Syntax
@@ -217,5 +345,19 @@ MIT License - see LICENSE file for details.
 ## Requirements
 
 - Python 3.10+
-- Lark parser
-- Pydantic (for configuration)
+- Lark parser (PEG grammar parsing)
+- Pydantic v2+ (data validation and configuration)
+- Pydantic-settings (configuration management)
+
+## License
+
+This project is licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License - see the [LICENSE](LICENSE) file for details.
+
+You are free to:
+- **Share** — copy and redistribute the material in any medium or format
+- **Adapt** — remix, transform, and build upon the material for any purpose, even commercially
+
+Under the following terms:
+- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made
+
+For more details, see: https://creativecommons.org/licenses/by/4.0/

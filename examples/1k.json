@@ -1,0 +1,49 @@
+{
+  "left_path": "/mnt/d/proj/spice_netlist_parser/examples/1k.sp",
+  "right_path": "/mnt/d/proj/spice_netlist_parser/examples/1k.sp",
+  "left": {
+    "title": "Untitled",
+    "components": 1000,
+    "nodes": 4,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "C": 332,
+      "R": 667,
+      "V": 1
+    }
+  },
+  "right": {
+    "title": "Untitled",
+    "components": 1000,
+    "nodes": 4,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "C": 332,
+      "R": 667,
+      "V": 1
+    }
+  },
+  "verification": {
+    "components_left": 1000,
+    "components_right": 1000,
+    "components_compared": 660,
+    "missing_components": [],
+    "extra_components": [],
+    "components_with_type_diffs": 0,
+    "components_with_node_diffs": 0,
+    "components_with_model_diffs": 0,
+    "components_with_parameter_diffs": 0,
+    "includes_equal": true,
+    "options_equal": true,
+    "models_equal": true,
+    "connectivity_fingerprint_left": "d1df282f49de",
+    "connectivity_fingerprint_right": "d1df282f49de",
+    "sizing_fingerprint_left": "8d1740c1129e",
+    "sizing_fingerprint_right": "8d1740c1129e"
+  },
+  "differences": []
+}
