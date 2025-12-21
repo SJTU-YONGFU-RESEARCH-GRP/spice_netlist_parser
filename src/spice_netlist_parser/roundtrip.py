@@ -21,12 +21,18 @@ the *domain model*, not perfect textual equivalence of the original file.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any, Iterable, Mapping, Sequence
+from typing import TYPE_CHECKING, Any
 
-from .models import Component, Netlist
 from .parser import SpiceNetlistParser
 from .serializer import SpiceSerializer, SpiceSerializerOptions
+
+if TYPE_CHECKING:
+    from .models import Component, Netlist
+
+# Constants
+MAX_DIFFS_TO_SHOW = 25
 
 
 @dataclass(frozen=True, slots=True)
@@ -79,7 +85,9 @@ class RoundTripValidator:
         original = self._parser.parse_string(netlist_text)
         serialized = self._serializer.serialize(original)
         reparsed = self._parser.parse_string(serialized)
-        return RoundTripResult(original=original, serialized_spice=serialized, reparsed=reparsed)
+        return RoundTripResult(
+            original=original, serialized_spice=serialized, reparsed=reparsed
+        )
 
     def assert_round_trip_string(self, netlist_text: str) -> RoundTripResult:
         """Round-trip a string and assert equivalence.
@@ -95,7 +103,9 @@ class RoundTripValidator:
         """
 
         result = self.round_trip_string(netlist_text)
-        self.assert_equivalent(result.original, result.reparsed, serialized_spice=result.serialized_spice)
+        self.assert_equivalent(
+            result.original, result.reparsed, serialized_spice=result.serialized_spice
+        )
         return result
 
     def assert_equivalent(
@@ -128,8 +138,8 @@ class RoundTripValidator:
             return
 
         msg_lines: list[str] = ["Round-trip mismatch detected:"]
-        msg_lines.extend(f"- {d}" for d in diffs[:25])
-        if len(diffs) > 25:
+        msg_lines.extend(f"- {d}" for d in diffs[:MAX_DIFFS_TO_SHOW])
+        if len(diffs) > MAX_DIFFS_TO_SHOW:
             msg_lines.append(f"- ... {len(diffs) - 25} more differences")
         if serialized_spice is not None:
             msg_lines.append("\nSerialized SPICE (for repro):\n")
@@ -206,7 +216,9 @@ class RoundTripValidator:
             diffs.append(f"nodes: {a.nodes!r} != {b.nodes!r}")
         if (a.model or None) != (b.model or None):
             diffs.append(f"model: {a.model!r} != {b.model!r}")
-        if not RoundTripValidator._mapping_equivalent(a.parameters, b.parameters, float_tol=float_tol):
+        if not RoundTripValidator._mapping_equivalent(
+            a.parameters, b.parameters, float_tol=float_tol
+        ):
             diffs.append(f"parameters: {a.parameters!r} != {b.parameters!r}")
         return diffs
 
@@ -230,8 +242,10 @@ class RoundTripValidator:
 
         if set(a.keys()) != set(b.keys()):
             return False
-        for k in a.keys():
-            if not RoundTripValidator._value_equivalent(a[k], b[k], float_tol=float_tol):
+        for k in a.keys():  # noqa: SIM118
+            if not RoundTripValidator._value_equivalent(
+                a[k], b[k], float_tol=float_tol
+            ):
                 return False
         return True
 
@@ -255,7 +269,7 @@ class RoundTripValidator:
 
         if set(a.keys()) != set(b.keys()):
             return False
-        for model_name in a.keys():
+        for model_name in a.keys():  # noqa: SIM118
             ma = a[model_name]
             mb = b[model_name]
             if str(ma.get("type", "")).strip() != str(mb.get("type", "")).strip():
@@ -263,11 +277,12 @@ class RoundTripValidator:
             pa = ma.get("parameters", {})
             pb = mb.get("parameters", {})
             if isinstance(pa, Mapping) and isinstance(pb, Mapping):
-                if not RoundTripValidator._mapping_equivalent(pa, pb, float_tol=float_tol):
+                if not RoundTripValidator._mapping_equivalent(
+                    pa, pb, float_tol=float_tol
+                ):
                     return False
-            else:
-                if pa != pb:
-                    return False
+            elif pa != pb:
+                return False
         return True
 
     @staticmethod
@@ -283,8 +298,6 @@ class RoundTripValidator:
             True if equivalent.
         """
 
-        if isinstance(a, (int, float)) and isinstance(b, (int, float)):
+        if isinstance(a, int | float) and isinstance(b, int | float):
             return abs(float(a) - float(b)) <= float_tol
-        return a == b
-
-
+        return bool(a == b)

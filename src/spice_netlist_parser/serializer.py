@@ -14,10 +14,12 @@ Notes:
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any, Iterable, Mapping, Sequence
+from typing import TYPE_CHECKING, Any
 
-from .models import Component, Netlist
+if TYPE_CHECKING:
+    from .models import Component, Netlist
 
 
 @dataclass(frozen=True, slots=True)
@@ -55,7 +57,7 @@ class SpiceSerializer:
 
         self._options = options or SpiceSerializerOptions()
 
-    def serialize(self, netlist: Netlist) -> str:
+    def serialize(self, netlist: Netlist) -> str:  # noqa: PLR0912
         """Serialize a `Netlist` into SPICE text.
 
         Args:
@@ -81,7 +83,7 @@ class SpiceSerializer:
                     continue
                 # Quote if it contains whitespace.
                 if any(ch.isspace() for ch in include_path):
-                    include_path = f"\"{include_path}\""
+                    include_path = f'"{include_path}"'
                 lines.append(f".INCLUDE {include_path}")
 
         if self._options.include_options and netlist.options:
@@ -90,8 +92,7 @@ class SpiceSerializer:
                 lines.append(".OPTION " + " ".join(opt_parts))
 
         # Components
-        for comp in netlist.components:
-            lines.append(self._serialize_component(comp))
+        lines.extend(self._serialize_component(comp) for comp in netlist.components)
 
         if self._options.include_models and netlist.models:
             lines.append("* Models")
@@ -164,11 +165,10 @@ class SpiceSerializer:
             Sorted list of `key=value` tokens.
         """
 
-        parts: list[str] = []
-        for key in sorted(params.keys(), key=lambda s: str(s).lower()):
-            value = params[key]
-            parts.append(f"{str(key).lower()}={SpiceSerializer._format_value(value)}")
-        return parts
+        return [
+            f"{str(key).lower()}={SpiceSerializer._format_value(params[key])}"
+            for key in sorted(params.keys(), key=lambda s: str(s).lower())
+        ]
 
     @staticmethod
     def _format_value(value: Any) -> str:
@@ -185,17 +185,15 @@ class SpiceSerializer:
             return "0"
         if isinstance(value, bool):
             return "1" if value else "0"
-        if isinstance(value, (int, float)):
+        if isinstance(value, int | float):
             # Use a compact format; keep scientific notation when needed.
             return format(float(value), ".12g")
         s = str(value)
         # Preserve function call tokens like SIN(0 1 2) as-is.
         # Quote if it contains whitespace.
         if any(ch.isspace() for ch in s):
-            return f"\"{s}\""
+            return f'"{s}"'
         # Strip surrounding quotes to avoid double quoting.
-        if len(s) >= 2 and s[0] == "\"" and s[-1] == "\"":
+        if len(s) >= 2 and s[0] == '"' and s[-1] == '"':  # noqa: PLR2004
             return s[1:-1]
         return s
-
-

@@ -27,6 +27,8 @@ classifiers = [
 
 dependencies = [
     "lark>=1.1.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
 ]
 
 [project.optional-dependencies]
@@ -40,7 +42,7 @@ dev = [
 ]
 
 [project.scripts]
-spice-parser = "spice_netlist_parser.cli:main"
+spice-parser = "main:main"
 
 [project.urls]
 Homepage = "https://github.com/yourusername/spice-netlist-parser"
@@ -74,7 +76,6 @@ select = [
     "EM",  # flake8-errmsg
     "ICN", # flake8-import-conventions
     "G",   # flake8-logging-format
-    "IN",  # flake8-import-order
     "PIE", # flake8-pie
     "T20", # flake8-print
     "PYI", # flake8-pyi
@@ -109,6 +110,12 @@ ignore = [
     "C901",  # too complex
 ]
 
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "I001",  # Allow non-isort import grouping in tests
+    "PT001", # Allow @pytest.fixture() in tests
+]
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
@@ -136,5 +143,3 @@ show_error_codes = true
 [tool.bandit]
 exclude_dirs = ["tests", "*.egg-info", ".venv", "venv"]
 skips = ["B101", "B601"]
-
-

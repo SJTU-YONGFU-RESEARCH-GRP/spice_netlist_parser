@@ -274,5 +274,14 @@ fi
 echo -e "${GREEN}Running parser...${NC}"
 echo ""
 
-$PYTHON_CMD -m spice_netlist_parser.cli "${PASSTHROUGH_ARGS[@]}"
-
+# Determine the command to run based on mode
+if [ -n "$COMPARE_FILE" ]; then
+    # Compare mode
+    $PYTHON_CMD -m spice_netlist_parser.cli compare "${PASSTHROUGH_ARGS[0]}" "$COMPARE_FILE" --format "$COMPARE_FORMAT" ${COMPARE_OUTPUT:+--output "$COMPARE_OUTPUT"}
+elif [ "$ROUNDTRIP" -eq 1 ]; then
+    # Roundtrip mode
+    $PYTHON_CMD -m spice_netlist_parser.cli roundtrip "${PASSTHROUGH_ARGS[0]}" ${ROUNDTRIP_OUTPUT:+--output "$ROUNDTRIP_OUTPUT"}
+else
+    # Normal parse mode
+    $PYTHON_CMD -m spice_netlist_parser.cli parse "${PASSTHROUGH_ARGS[0]}" --verbose
+fi

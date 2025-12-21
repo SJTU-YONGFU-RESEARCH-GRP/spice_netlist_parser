@@ -21,11 +21,6 @@ Example:
     ...     print(f"  {comp.name}: {comp.component_type.value}")
 """
 
-from .parser import SpiceNetlistParser
-from .models import Netlist, Component, ComponentType
-from .exceptions import ParseError, ValidationError
-from .roundtrip import RoundTripValidator, RoundTripMismatchError, RoundTripResult
-from .serializer import SpiceSerializer, SpiceSerializerOptions
 from .comparison import (
     NetlistComparisonReport,
     NetlistStats,
@@ -33,26 +28,33 @@ from .comparison import (
     compare_netlists,
     format_report_text,
 )
+from .exceptions import ParseError, ValidationError
+from .logging_config import setup_logging
+from .models import Component, ComponentType, Netlist
+from .parser import SpiceNetlistParser
+from .roundtrip import RoundTripMismatchError, RoundTripResult, RoundTripValidator
+from .serializer import SpiceSerializer, SpiceSerializerOptions
+
+# Initialize logging on import
+setup_logging()
 
 __all__ = [
-    "SpiceNetlistParser",
-    "Netlist",
     "Component",
     "ComponentType",
+    "Netlist",
+    "NetlistComparisonReport",
+    "NetlistStats",
     "ParseError",
-    "ValidationError",
-    "SpiceSerializer",
-    "SpiceSerializerOptions",
-    "RoundTripValidator",
     "RoundTripMismatchError",
     "RoundTripResult",
-    "NetlistStats",
-    "NetlistComparisonReport",
+    "RoundTripValidator",
+    "SpiceNetlistParser",
+    "SpiceSerializer",
+    "SpiceSerializerOptions",
+    "ValidationError",
     "compare_files",
     "compare_netlists",
     "format_report_text",
 ]
 
 __version__ = "0.1.0"
-
-

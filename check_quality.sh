@@ -15,6 +15,7 @@ NC='\033[0m' # No Color
 
 # Counter for failed checks
 FAILED_CHECKS=0
+PRECOMMIT_PASSED=0
 
 # Function to print status
 print_status() {
@@ -37,6 +38,7 @@ echo -e "\n${BLUE}1. Running pre-commit hooks...${NC}"
 if command_exists pre-commit; then
     if pre-commit run --all-files; then
         print_status 0 "Pre-commit hooks passed"
+        PRECOMMIT_PASSED=1
     else
         print_status 1 "Pre-commit hooks failed"
         echo -e "${YELLOW}💡 Install pre-commit: pip install pre-commit${NC}"
@@ -70,7 +72,12 @@ else
 fi
 
 echo -e "\n${BLUE}3. Checking Ruff formatting...${NC}"
-if command_exists ruff; then
+if [ "$PRECOMMIT_PASSED" -eq 1 ]; then
+    # pre-commit already ran `ruff-format` using the pinned toolchain from
+    # `.pre-commit-config.yaml`. This avoids false failures due to local Ruff
+    # version differences (e.g., `ruff format --check` behavior changes).
+    print_status 0 "Ruff formatting check passed (validated by pre-commit)"
+elif command_exists ruff; then
     if [ -d "tests" ] && [ "$(ls -A tests 2>/dev/null)" ]; then
         if ruff format --check src/ tests/; then
             print_status 0 "Ruff formatting check passed"
@@ -91,8 +98,15 @@ else
 fi
 
 echo -e "\n${BLUE}4. Running type checking with MyPy...${NC}"
-if python3 -m mypy --version >/dev/null 2>&1 || python -m mypy --version >/dev/null 2>&1; then
-    if python3 -m mypy src/ --ignore-missing-imports 2>/dev/null || python -m mypy src/ --ignore-missing-imports; then
+PYTHON_BIN=""
+if command_exists python3; then
+    PYTHON_BIN="python3"
+elif command_exists python; then
+    PYTHON_BIN="python"
+fi
+
+if [ -n "$PYTHON_BIN" ] && $PYTHON_BIN -m mypy --version >/dev/null 2>&1; then
+    if $PYTHON_BIN -m mypy src/ --ignore-missing-imports; then
         print_status 0 "MyPy type checking passed"
     else
         print_status 1 "MyPy type checking failed"

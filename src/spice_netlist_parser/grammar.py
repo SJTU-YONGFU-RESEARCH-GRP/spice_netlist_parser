@@ -110,4 +110,3 @@ control_line: ".OP" | ".DC" | ".AC" | ".TRAN" | ".END"
 %import common.WS
 %ignore WS
 """
-

@@ -4,24 +4,19 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pytest
-
 from spice_netlist_parser.comparison import compare_files, format_report_text
 
-if TYPE_CHECKING:
-    from _pytest.fixtures import FixtureRequest
 
-
-@pytest.fixture
+@pytest.fixture()
 def project_root() -> Path:
     """Return repository root directory."""
 
     return Path(__file__).resolve().parent.parent
 
 
-@pytest.fixture
+@pytest.fixture()
 def examples_dir(project_root: Path) -> Path:
     """Return examples directory."""
 
@@ -66,5 +61,3 @@ def test_compare_produces_json_report(examples_dir: Path) -> None:
     assert "right" in decoded
     assert "verification" in decoded
     assert "differences" in decoded
-
-
