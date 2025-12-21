@@ -1,9 +1,14 @@
 # SPICE Netlist Parser
 
-[![CI](https://github.com/yourusername/spice-netlist-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/spice-netlist-parser/actions/workflows/ci.yml)
-[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![codecov](https://codecov.io/gh/yourusername/spice-netlist-parser/branch/main/graph/badge.svg)](https://codecov.io/gh/yourusername/spice-netlist-parser)
+[![CI](https://github.com/SJTU-YONGFU-RESEARCH-GRP/spice_netlist_parser/actions/workflows/tests.yml/badge.svg)](https://github.com/SJTU-YONGFU-RESEARCH-GRP/spice_netlist_parser/actions/workflows/tests.yml)
+[![Code Quality](https://github.com/SJTU-YONGFU-RESEARCH-GRP/spice_netlist_parser/actions/workflows/code-quality.yml/badge.svg)](https://github.com/SJTU-YONGFU-RESEARCH-GRP/spice_netlist_parser/actions/workflows/code-quality.yml)
+[![Security](https://github.com/SJTU-YONGFU-RESEARCH-GRP/spice_netlist_parser/actions/workflows/security.yml/badge.svg)](https://github.com/SJTU-YONGFU-RESEARCH-GRP/spice_netlist_parser/actions/workflows/security.yml)
+[![codecov](https://codecov.io/gh/SJTU-YONGFU-RESEARCH-GRP/spice_netlist_parser/branch/main/graph/badge.svg)](https://codecov.io/gh/SJTU-YONGFU-RESEARCH-GRP/spice_netlist_parser)
+[![Code Style: Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/charliermarsh/ruff)
+[![Type Checking: Mypy](https://img.shields.io/badge/type%20checking-mypy-blue.svg)](https://mypy-lang.org/)
+
 
 A robust, AST-based parser for SPICE netlist files with comprehensive analysis and validation capabilities.
 
