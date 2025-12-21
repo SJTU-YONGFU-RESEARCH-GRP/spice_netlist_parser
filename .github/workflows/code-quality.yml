@@ -38,6 +38,9 @@ jobs:
     - name: Check CLI
       run: PYTHONPATH=src python -m spice_netlist_parser.main --help > /dev/null && echo "✓ CLI works"
 
+    - name: Check code formatting
+      run: ruff format --check src/ tests/
+
     - name: Run pre-commit hooks
       run: |
         pip install pre-commit

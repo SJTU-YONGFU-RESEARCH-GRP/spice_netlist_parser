@@ -38,9 +38,9 @@ def test_round_trip_is_parseable(validator: RoundTripValidator) -> None:
     netlist = "R1 0 1 1000\nC1 1 2 1e-6\n.END\n"
     result = validator.round_trip_string(netlist)
 
-    assert (
-        ".END" in result.serialized_spice.splitlines()[-1]
-    ), "Serialized netlist must end with .END"
+    assert ".END" in result.serialized_spice.splitlines()[-1], (
+        "Serialized netlist must end with .END"
+    )
 
 
 EXPECTED_PASSIVE_NODE_COUNT = 2
@@ -54,9 +54,9 @@ def test_values_not_in_nodes() -> None:
 
     for comp in netlist.components:
         if comp.component_type.value in {"R", "C", "L"}:
-            assert (
-                len(comp.nodes) == EXPECTED_PASSIVE_NODE_COUNT
-            ), f"{comp.name} should have exactly {EXPECTED_PASSIVE_NODE_COUNT} connectivity nodes"
-            assert (
-                "value" in comp.parameters
-            ), f"{comp.name} should have its value in parameters['value']"
+            assert len(comp.nodes) == EXPECTED_PASSIVE_NODE_COUNT, (
+                f"{comp.name} should have exactly {EXPECTED_PASSIVE_NODE_COUNT} connectivity nodes"
+            )
+            assert "value" in comp.parameters, (
+                f"{comp.name} should have its value in parameters['value']"
+            )
