@@ -1,4 +1,4 @@
-# 2025-12-21T22:33:16+08:00
+# 2025-12-22T01:39:49+08:00
 # Input: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
 # JSON output: /mnt/d/proj/spice_netlist_parser/examples//10k.json
 # Compare output: /mnt/d/proj/spice_netlist_parser/examples//10k.json
@@ -11,8 +11,8 @@ Note: Not in a virtual environment. Consider using one.
 
 [0;32mRunning parser...[0m
 
-2025-12-21 22:33:17,264 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
-2025-12-21 22:33:18,119 - spice_netlist_parser.parser - INFO - Successfully parsed 10000 components, 0 models
+2025-12-22 01:39:50,777 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
+2025-12-22 01:39:52,070 - spice_netlist_parser.parser - INFO - Successfully parsed 10000 components, 0 models
 Successfully parsed: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
 Title: Untitled
 Components: 10000
@@ -36693,16 +36693,16 @@ Note: Not in a virtual environment. Consider using one.
 -------------------
 [0;32mComparing:[0m /mnt/d/proj/spice_netlist_parser/examples/10k.sp  <->  /mnt/d/proj/spice_netlist_parser/examples/10k.sp
 
-2025-12-21 22:33:18,606 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
-2025-12-21 22:33:19,418 - spice_netlist_parser.parser - INFO - Successfully parsed 10000 components, 0 models
-2025-12-21 22:33:19,420 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
-2025-12-21 22:33:20,261 - spice_netlist_parser.parser - INFO - Successfully parsed 10000 components, 0 models
+2025-12-22 01:39:52,942 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
+2025-12-22 01:39:54,140 - spice_netlist_parser.parser - INFO - Successfully parsed 10000 components, 0 models
+2025-12-22 01:39:54,143 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
+2025-12-22 01:39:55,080 - spice_netlist_parser.parser - INFO - Successfully parsed 10000 components, 0 models
 Report written to /mnt/d/proj/spice_netlist_parser/examples/10k.json
 
 [0;32mRunning parser...[0m
 
-2025-12-21 22:33:20,822 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
-2025-12-21 22:33:21,849 - spice_netlist_parser.parser - INFO - Successfully parsed 10000 components, 0 models
-2025-12-21 22:33:21,852 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
-2025-12-21 22:33:22,733 - spice_netlist_parser.parser - INFO - Successfully parsed 10000 components, 0 models
+2025-12-22 01:39:56,281 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
+2025-12-22 01:39:57,202 - spice_netlist_parser.parser - INFO - Successfully parsed 10000 components, 0 models
+2025-12-22 01:39:57,205 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
+2025-12-22 01:39:58,103 - spice_netlist_parser.parser - INFO - Successfully parsed 10000 components, 0 models
 Comparison report written to /mnt/d/proj/spice_netlist_parser/examples/10k.json

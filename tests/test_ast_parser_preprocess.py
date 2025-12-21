@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import pytest
 
+from lark import Token, Tree
+
 from spice_netlist_parser.ast_parser import ASTBuilder, SpiceASTParser
 from spice_netlist_parser.exceptions import ParseError
 
@@ -39,8 +41,6 @@ def test_parse_string_unexpected_characters() -> None:
 
 def test_render_function_call_helper() -> None:
     """_render_function_call should build string from func_arg_list."""
-
-    from lark import Token, Tree
 
     builder = ASTBuilder()
     func_tree = Tree(

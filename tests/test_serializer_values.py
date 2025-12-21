@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 
+from spice_netlist_parser.models import Component, ComponentType
 from spice_netlist_parser.serializer import SpiceSerializer
 
 
@@ -27,8 +28,6 @@ def test_format_kv_params_sorts_keys() -> None:
 
 def test_serialize_component_with_value_and_params() -> None:
     """_serialize_component should place value before other params."""
-
-    from spice_netlist_parser.models import Component, ComponentType
 
     comp = Component(
         name="R1",

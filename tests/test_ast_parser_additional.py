@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import pytest
 
+from lark import Token, Tree
+
 from spice_netlist_parser.ast_parser import ASTBuilder, SpiceASTParser
 from spice_netlist_parser.ast_nodes import NodeType
 from spice_netlist_parser.exceptions import ParseError
@@ -16,7 +18,6 @@ def test_build_value_handles_function_call_token() -> None:
 
     builder = ASTBuilder()
     # Manually construct a value tree with a FUNCTION_CALL token.
-    from lark import Token, Tree  # Imported lazily to keep dependency local
 
     tree = Tree("value", [Token("FUNCTION_CALL", "SIN(0 1 2)")])
     value_node = builder.build_value(tree)
@@ -28,7 +29,6 @@ def test_build_value_handles_string_and_number_tokens() -> None:
     """build_value should parse numbers and strings."""
 
     builder = ASTBuilder()
-    from lark import Token, Tree
 
     num_tree = Tree("value", [Token("SIGNED_NUMBER", "10")])
     str_tree = Tree("value", [Token("STRING", '"abc"')])
@@ -44,7 +44,6 @@ def test_build_value_from_token_string_and_number() -> None:
     """_build_value_from_token should support string and number tokens."""
 
     builder = ASTBuilder()
-    from lark import Token
 
     signed_number_node = builder._build_value_from_token(Token("SIGNED_NUMBER", "3.3"))  # noqa: SLF001
     string_node = builder._build_value_from_token(Token("STRING", '"abc"'))  # noqa: SLF001
