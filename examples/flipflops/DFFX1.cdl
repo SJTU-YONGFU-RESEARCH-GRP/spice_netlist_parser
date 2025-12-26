@@ -1,0 +1,19 @@
+************************************************************************
+* Library Name: ICSN55H7RVT
+* Cell Name:    DFFX1H7R
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT DFFX1H7R CK D Q QN VDD VSS
+*.PININFO CK:I D:I Q:O QN:O VDD:B VSS:B
+XI2 net46 CKP CKN VDD VSS net33 / TSINV pl=6E-08 pw=1.5E-07 nl=6E-08 nw=1.5E-07
+XXI6 D CKN CKP VDD VSS net33 / TSINV pl=6E-08 pw=2.8E-07 nl=6E-08 nw=2E-07
+XI3 net46 CKP CKN VDD VSS net25 / TSINV pl=6E-08 pw=3E-07 nl=6E-08 nw=2.2E-07
+XI4 net9 CKN CKP VDD VSS net25 / TSINV pl=6E-08 pw=1.5E-07 nl=6E-08 nw=1.5E-07
+XI1 net33 VDD VSS net46 / INV pl=6E-08 pw=2.8E-07 nl=6E-08 nw=2E-07
+XI0 CKN VDD VSS CKP / INV pl=6E-08 pw=2.8E-07 nl=6E-08 nw=2E-07
+XXI12 net25 VDD VSS Q / INV pl=6E-08 pw=3E-07 nl=6E-08 nw=2.4E-07
+XXI10 net25 VDD VSS net9 / INV pl=6E-08 pw=3E-07 nl=6E-08 nw=2.2E-07
+XI5 net9 VDD VSS QN / INV pl=6E-08 pw=3E-07 nl=6E-08 nw=2.4E-07
+XXI4 CK VDD VSS CKN / INV pl=6E-08 pw=2.8E-07 nl=6E-08 nw=2E-07
+.ENDS

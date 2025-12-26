@@ -1,0 +1,14 @@
+************************************************************************
+* Library Name: ICSN55H7RVT
+* Cell Name:    XOR2X0P5H7R
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT XOR2X0P5H7R A B VDD VSS Y
+*.PININFO A:I B:I Y:O VDD:B VSS:B
+XI0 AN A BN net19 VDD VSS / TG pl=6e-08 pw=1.9e-07 nl=6e-08 nw=1.5e-07
+XI6 net19 VDD VSS Y / INV pl=6e-08 pw=1.9e-07 nl=6e-08 nw=1.5e-07
+XI1 B VDD VSS BN / INV pl=6e-08 pw=1.9e-07 nl=6e-08 nw=1.5e-07
+XI4 A VDD VSS AN / INV pl=6e-08 pw=1.9e-07 nl=6e-08 nw=1.5e-07
+XI3 BN A AN VDD VSS net19 / TSINV pl=6e-08 pw=1.9e-07 nl=6e-08 nw=1.5e-07
+.ENDS

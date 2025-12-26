@@ -11,7 +11,7 @@ FUNCTION_CALL.10: /[A-Za-z_][A-Za-z0-9_]*\([^)]*\)/
 
 // Component names start with designator and must include at least one digit
 RESISTOR_NAME.10: /R[0-9][A-Za-z0-9_]*/
-CAPACITOR_NAME.10: /C[A-Za-z0-9_]+/
+CAPACITOR_NAME.12: /C[A-Za-z0-9_]+/
 INDUCTOR_NAME.10: /L[0-9][A-Za-z0-9_]*/
 VOLTAGE_NAME.10: /V[0-9][A-Za-z0-9_]*|V[A-Za-z0-9_]{3,}/
 CURRENT_NAME.10: /I[0-9][A-Za-z0-9_]*/
@@ -35,16 +35,17 @@ statement: component_line
          | subckt_line
          | control_line
 
-// Component definitions (fixed arity)
-component_line: two_node_component
-             | diode_component
-             | mosfet_component
+// Component definitions (fixed arity) - order matters for precedence
+component_line: mosfet_component
              | bjt_component
+             | diode_component
              | subckt_instance
+             | two_node_component
 
 node2: node node
 node3: node node node
 node4: node node node node
+node5: node node node node node
 node_list: node+
 
 two_node_component: (RESISTOR_NAME | CAPACITOR_NAME | INDUCTOR_NAME | VOLTAGE_NAME | CURRENT_NAME | COMPONENT_NAME) node2 component_body?
@@ -55,22 +56,22 @@ bjt_component: BJT_NAME node3 MODEL_NAME param_or_value*
 subckt_instance: SUBCKT_INST_NAME node_list MODEL_NAME param_or_value*
 
 // Model names (require uppercase letter to distinguish from simple node names)
-MODEL_NAME.7: /[A-Za-z0-9_]*[A-Z][A-Za-z0-9_]*/
+MODEL_NAME.10: /[A-Za-z_][A-Za-z0-9_]*/
 
 // Parameter names (short) only when immediately followed by '='
 PARAM_NAME.3: /(?![RCLVIMQDX][0-9])(?![A-Za-z_][A-Za-z0-9_]*\()[A-Za-z_][A-Za-z0-9_]{0,3}(?==)/
 
 node: SIGNED_NUMBER | ZERO | NODE_NAME | MODEL_NAME
 ZERO: "0"
-// Node names: lowercase, avoid component designators, must not be function call
-NODE_NAME.6: /(?![RCLVIMQDX][0-9])(?![A-Za-z_][A-Za-z0-9_]*\()[a-z_][a-z0-9_.-]*/
+// Node names: avoid component designators, must not be function call
+NODE_NAME.6: /(?![RCLVIMQDX][0-9])(?![A-Za-z_][A-Za-z0-9_]*\()[A-Za-z_][A-Za-z0-9_.-]*/
 
 // Component body: optional leading model name followed by parameters/values (FUNCTION_CALL handled via value)
 component_body: MODEL_NAME param_or_value*
               | param_or_value+
 
 // Allow compact param assignments like L=0.25u as a single token
-PARAM_ASSIGN.8: /[A-Za-z][A-Za-z0-9_]*=[^ \t\r\n]+/
+PARAM_ASSIGN.15: /[A-Za-z][A-Za-z0-9_]*=[^ \t\r\n]+/
 param_or_value: parameter | value | PARAM_ASSIGN
 
 parameter: PARAM_NAME "=" value

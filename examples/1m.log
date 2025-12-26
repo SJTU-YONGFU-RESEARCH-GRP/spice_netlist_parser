@@ -1,66 +1,137 @@
-# 2025-12-22T01:50:19+08:00
+# 2025-12-26T20:56:02+08:00
 # Input: /mnt/d/proj/spice_netlist_parser/examples/1m.sp
 # JSON output: /mnt/d/proj/spice_netlist_parser/examples//1m.json
 # Compare output: /mnt/d/proj/spice_netlist_parser/examples//1m.json
-# Extra args: --help
-# Command (parse): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/1m.sp" --format json --output "/mnt/d/proj/spice_netlist_parser/examples//1m.json" --help
+# Command (parse): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/1m.sp" --format json --output "/mnt/d/proj/spice_netlist_parser/examples//1m.json" 
 ------------------------------------------------------------
 [0;34mSPICE Netlist Parser[0m
 ====================
 
 Note: Not in a virtual environment. Consider using one.
 
-Usage: /mnt/d/proj/spice_netlist_parser/netlist_parser.sh <netlist_file> [options]
+[0;32mRunning parser...[0m
 
-Parser options (passed through to CLI):
-  -f, --format <format>       Output format: text, json, summary (default: text)
-  -o, --output <file>         Output file path
-  --ast                       Show AST structure
-  -v, --verbose               Verbose output
+2025-12-26 20:56:04,301 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/1m.sp
+2025-12-26 20:56:11,252 - spice_netlist_parser.cli - ERROR - Failed to parse /mnt/d/proj/spice_netlist_parser/examples/1m.sp: File: /mnt/d/proj/spice_netlist_parser/examples/1m.sp - Line 3 - Unexpected token at line 3: Unexpected token Token('MODEL_NAME', 'R1c') at line 3, column 1.
+Expected one of: 
+	* BJT_NAME
+	* MOSFET_NAME
+	* COMPONENT_NAME
+	* __ANON_4
+	* CAPACITOR_NAME
+	* VOLTAGE_NAME
+	* __ANON_5
+	* __ANON_3
+	* SUBCKT_INST_NAME
+	* __ANON_2
+	* NEWLINE
+	* __ANON_7
+	* CURRENT_NAME
+	* INDUCTOR_NAME
+	* __ANON_10
+	* __ANON_9
+	* __ANON_1
+	* RESISTOR_NAME
+	* DIODE_NAME
+	* __ANON_8
+	* __ANON_0
 
-Quality / accuracy options:
-  --roundtrip                 Run parse -> serialize -> parse validation on the input file
-  --roundtrip-only            Only run round-trip validation (do not print parsed output)
-  --roundtrip-output <file>   Write the serialized SPICE produced by round-trip to a file
-  --compare <file2>           Compare <netlist_file> against <file2> (semantic model diff)
-  --compare-format <format>   Compare output format: text, json (default: text)
-  --compare-output <file>     Write compare report to a file (default: stdout)
 
-Examples:
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp --format json --output result.json
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp --roundtrip
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp --roundtrip --roundtrip-output rt.sp
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp --compare examples/10k.sp
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp --compare examples/10k.sp --compare-format json --compare-output report.json
-
-# Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/1m.sp" --compare "/mnt/d/proj/spice_netlist_parser/examples/1m.sp" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples//1m.json" --help
+# Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/1m.sp" --compare "/mnt/d/proj/spice_netlist_parser/examples/1m.sp" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples//1m.json" 
 ------------------------------------------------------------
 [0;34mSPICE Netlist Parser[0m
 ====================
 
 Note: Not in a virtual environment. Consider using one.
 
-Usage: /mnt/d/proj/spice_netlist_parser/netlist_parser.sh <netlist_file> [options]
+[0;34mNetlist comparison[0m
+-------------------
+[0;32mComparing:[0m /mnt/d/proj/spice_netlist_parser/examples/1m.sp  <->  /mnt/d/proj/spice_netlist_parser/examples/1m.sp
 
-Parser options (passed through to CLI):
-  -f, --format <format>       Output format: text, json, summary (default: text)
-  -o, --output <file>         Output file path
-  --ast                       Show AST structure
-  -v, --verbose               Verbose output
+2025-12-26 20:56:12,097 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/1m.sp
+Traceback (most recent call last):
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser_state.py", line 77, in feed_token
+    action, arg = states[state][token.type]
+KeyError: 'MODEL_NAME'
 
-Quality / accuracy options:
-  --roundtrip                 Run parse -> serialize -> parse validation on the input file
-  --roundtrip-only            Only run round-trip validation (do not print parsed output)
-  --roundtrip-output <file>   Write the serialized SPICE produced by round-trip to a file
-  --compare <file2>           Compare <netlist_file> against <file2> (semantic model diff)
-  --compare-format <format>   Compare output format: text, json (default: text)
-  --compare-output <file>     Write compare report to a file (default: stdout)
+During handling of the above exception, another exception occurred:
 
-Examples:
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp --format json --output result.json
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp --roundtrip
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp --roundtrip --roundtrip-output rt.sp
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp --compare examples/10k.sp
-  /mnt/d/proj/spice_netlist_parser/netlist_parser.sh examples/1k.sp --compare examples/10k.sp --compare-format json --compare-output report.json
+Traceback (most recent call last):
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 524, in parse_string
+    tree = self.parser.parse(processed_text, start="start")
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/lark.py", line 677, in parse
+    return self.parser.parse(text, start=start, on_error=on_error)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parser_frontends.py", line 131, in parse
+    return self.parser.parse(stream, chosen_start, **kw)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 42, in parse
+    return self.parser.parse(lexer, start)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 88, in parse
+    return self.parse_from_state(parser_state)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 111, in parse_from_state
+    raise e
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 102, in parse_from_state
+    state.feed_token(token)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser_state.py", line 80, in feed_token
+    raise UnexpectedToken(token, expected, state=self, interactive_parser=None)
+lark.exceptions.UnexpectedToken: Unexpected token Token('MODEL_NAME', 'R1c') at line 3, column 1.
+Expected one of: 
+	* CAPACITOR_NAME
+	* DIODE_NAME
+	* MOSFET_NAME
+	* NEWLINE
+	* CURRENT_NAME
+	* __ANON_3
+	* INDUCTOR_NAME
+	* __ANON_10
+	* __ANON_7
+	* __ANON_2
+	* COMPONENT_NAME
+	* __ANON_9
+	* __ANON_1
+	* BJT_NAME
+	* __ANON_0
+	* __ANON_5
+	* VOLTAGE_NAME
+	* __ANON_4
+	* __ANON_8
+	* SUBCKT_INST_NAME
+	* RESISTOR_NAME
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<stdin>", line 36, in <module>
+  File "<stdin>", line 18, in main
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/comparison.py", line 319, in compare_files
+    left = p.parse_file(left_path)
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/parser.py", line 50, in parse_file
+    ast = self.ast_parser.parse_file(filepath)
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 470, in parse_file
+    return self.parse_string(content)
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 532, in parse_string
+    raise ParseError(msg, filename=self.filename, line_number=line_num) from e
+spice_netlist_parser.exceptions.ParseError: File: /mnt/d/proj/spice_netlist_parser/examples/1m.sp - Line 3 - Unexpected token at line 3: Unexpected token Token('MODEL_NAME', 'R1c') at line 3, column 1.
+Expected one of: 
+	* CAPACITOR_NAME
+	* DIODE_NAME
+	* MOSFET_NAME
+	* NEWLINE
+	* CURRENT_NAME
+	* __ANON_3
+	* INDUCTOR_NAME
+	* __ANON_10
+	* __ANON_7
+	* __ANON_2
+	* COMPONENT_NAME
+	* __ANON_9
+	* __ANON_1
+	* BJT_NAME
+	* __ANON_0
+	* __ANON_5
+	* VOLTAGE_NAME
+	* __ANON_4
+	* __ANON_8
+	* SUBCKT_INST_NAME
+	* RESISTOR_NAME
+

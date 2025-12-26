@@ -1,0 +1,11 @@
+************************************************************************
+* Library Name: ICSCORE
+* Cell Name:    INV
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT INV A VDD VSS Y
+*.PININFO A:I Y:O VDD:B VSS:B
+MMN0 Y A VSS VSS nm1p2_svt_lp W=nw L=nl m=1
+MMP0 Y A VDD VDD pm1p2_svt_lp W=pw L=pl m=1
+.ENDS

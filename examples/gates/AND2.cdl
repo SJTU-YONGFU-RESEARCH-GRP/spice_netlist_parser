@@ -1,0 +1,14 @@
+************************************************************************
+* Library Name: ICSN55H7RVT
+* Cell Name:    AND2X1H7R
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT AND2X1H7R A B VDD VSS Y
+*.PININFO A:I B:I Y:O VDD:B VSS:B
+MMN0 net26 B net6 VSS nm1p2_svt_lp W=150n L=60n m=1
+MMN1 net6 A VSS VSS nm1p2_svt_lp W=150n L=60n m=1
+MPM0 net26 B VDD VDD pm1p2_svt_lp W=190n L=60n m=1
+MMP0 net26 A VDD VDD pm1p2_svt_lp W=190n L=60n m=1
+XXI2 net26 VDD VSS Y / INV pl=6e-08 pw=2.7e-07 nl=6e-08 nw=2.1e-07
+.ENDS

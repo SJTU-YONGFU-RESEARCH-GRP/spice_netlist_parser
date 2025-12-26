@@ -1,9 +1,8 @@
-# 2025-12-22T01:51:28+08:00
+# 2025-12-26T20:55:52+08:00
 # Input: /mnt/d/proj/spice_netlist_parser/examples/100k.sp
 # JSON output: /mnt/d/proj/spice_netlist_parser/examples//100k.json
 # Compare output: /mnt/d/proj/spice_netlist_parser/examples//100k.json
-# Extra args: --verbose
-# Command (parse): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/100k.sp" --format json --output "/mnt/d/proj/spice_netlist_parser/examples//100k.json" --verbose
+# Command (parse): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/100k.sp" --format json --output "/mnt/d/proj/spice_netlist_parser/examples//100k.json" 
 ------------------------------------------------------------
 [0;34mSPICE Netlist Parser[0m
 ====================
@@ -12,27 +11,70 @@ Note: Not in a virtual environment. Consider using one.
 
 [0;32mRunning parser...[0m
 
-2025-12-22 01:51:29,527 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100k.sp
+2025-12-26 20:55:54,321 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100k.sp
+2025-12-26 20:55:54,943 - spice_netlist_parser.cli - ERROR - Failed to parse /mnt/d/proj/spice_netlist_parser/examples/100k.sp: File: /mnt/d/proj/spice_netlist_parser/examples/100k.sp - Line 4 - Unexpected token at line 4: Unexpected token Token('PARAM_ASSIGN', 'L=0.13u') at line 4, column 18.
+Expected one of: 
+	* NODE_NAME
+	* MODEL_NAME
+
+
+# Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/100k.sp" --compare "/mnt/d/proj/spice_netlist_parser/examples/100k.sp" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples//100k.json" 
+------------------------------------------------------------
+[0;34mSPICE Netlist Parser[0m
+====================
+
+Note: Not in a virtual environment. Consider using one.
+
+[0;34mNetlist comparison[0m
+-------------------
+[0;32mComparing:[0m /mnt/d/proj/spice_netlist_parser/examples/100k.sp  <->  /mnt/d/proj/spice_netlist_parser/examples/100k.sp
+
+2025-12-26 20:55:55,834 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100k.sp
 Traceback (most recent call last):
-  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
-    return _run_code(code, main_globals, None,
-  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
-    exec(code, run_globals)
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/cli/__main__.py", line 13, in <module>
-    sys.exit(main())
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/main.py", line 177, in main
-    return parse_command(args)
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/cli/commands.py", line 50, in parse_command
-    netlist = spice_parser.parse_file(args.file)
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/parser.py", line 51, in parse_file
-    netlist = self.transformer.transform(ast)
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/visitors.py", line 97, in transform
-    return self.visit_netlist(ast)
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/visitors.py", line 114, in visit_netlist
-    result = stmt.accept(self)
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_nodes.py", line 45, in accept
-    return visitor_method(self)
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/visitors.py", line 154, in visit_component
-    return Component(
-  File "<string>", line 2, in __init__
-KeyboardInterrupt
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser_state.py", line 77, in feed_token
+    action, arg = states[state][token.type]
+KeyError: 'PARAM_ASSIGN'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 524, in parse_string
+    tree = self.parser.parse(processed_text, start="start")
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/lark.py", line 677, in parse
+    return self.parser.parse(text, start=start, on_error=on_error)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parser_frontends.py", line 131, in parse
+    return self.parser.parse(stream, chosen_start, **kw)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 42, in parse
+    return self.parser.parse(lexer, start)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 88, in parse
+    return self.parse_from_state(parser_state)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 111, in parse_from_state
+    raise e
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 102, in parse_from_state
+    state.feed_token(token)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser_state.py", line 80, in feed_token
+    raise UnexpectedToken(token, expected, state=self, interactive_parser=None)
+lark.exceptions.UnexpectedToken: Unexpected token Token('PARAM_ASSIGN', 'L=0.13u') at line 4, column 18.
+Expected one of: 
+	* MODEL_NAME
+	* NODE_NAME
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<stdin>", line 36, in <module>
+  File "<stdin>", line 18, in main
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/comparison.py", line 319, in compare_files
+    left = p.parse_file(left_path)
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/parser.py", line 50, in parse_file
+    ast = self.ast_parser.parse_file(filepath)
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 470, in parse_file
+    return self.parse_string(content)
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 532, in parse_string
+    raise ParseError(msg, filename=self.filename, line_number=line_num) from e
+spice_netlist_parser.exceptions.ParseError: File: /mnt/d/proj/spice_netlist_parser/examples/100k.sp - Line 4 - Unexpected token at line 4: Unexpected token Token('PARAM_ASSIGN', 'L=0.13u') at line 4, column 18.
+Expected one of: 
+	* MODEL_NAME
+	* NODE_NAME
+

@@ -1,0 +1,13 @@
+************************************************************************
+* Library Name: ICSCORE
+* Cell Name:    NAND2
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT NAND2 A B VDD VSS Y
+*.PININFO A:I B:I Y:O VDD:B VSS:B
+MMN0 Y B net15 VSS nm1p2_svt_lp W=nw L=nl m=1
+MMN2 net15 A VSS VSS nm1p2_svt_lp W=nw L=nl m=1
+MMP2 Y A VDD VDD pm1p2_svt_lp W=pw L=pl m=1
+MMP0 Y B VDD VDD pm1p2_svt_lp W=pw L=pl m=1
+.ENDS

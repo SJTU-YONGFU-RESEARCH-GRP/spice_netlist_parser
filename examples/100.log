@@ -1,9 +1,8 @@
-# 2025-12-22T01:51:25+08:00
+# 2025-12-26T20:55:50+08:00
 # Input: /mnt/d/proj/spice_netlist_parser/examples/100.sp
 # JSON output: /mnt/d/proj/spice_netlist_parser/examples//100.json
 # Compare output: /mnt/d/proj/spice_netlist_parser/examples//100.json
-# Extra args: --verbose
-# Command (parse): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/100.sp" --format json --output "/mnt/d/proj/spice_netlist_parser/examples//100.json" --verbose
+# Command (parse): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/100.sp" --format json --output "/mnt/d/proj/spice_netlist_parser/examples//100.json" 
 ------------------------------------------------------------
 [0;34mSPICE Netlist Parser[0m
 ====================
@@ -12,388 +11,33 @@ Note: Not in a virtual environment. Consider using one.
 
 [0;32mRunning parser...[0m
 
-2025-12-22 01:51:26,841 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100.sp
-2025-12-22 01:51:26,860 - spice_netlist_parser.parser - INFO - Successfully parsed 100 components, 0 models
-Successfully parsed: /mnt/d/proj/spice_netlist_parser/examples/100.sp
-Title: Untitled
-Components: 100
-Models: 0
-Nodes: 4
-
-Title: Untitled
-Components: 100
-Nodes: 4
-Models: 0
-
-Components:
-  V1a: V
-    Nodes: 0 1
-    Parameters: value=SIN(0 7.4 7605)
-
-  C1b: C
-    Nodes: 0 1
-    Parameters: value=40n
-
-  R1c: R
-    Nodes: 0 1
-    Parameters: value=63k
-
-  R1d: R
-    Nodes: 0 1
-    Parameters: value=48k
-
-  C1e: C
-    Nodes: 0 1
-    Parameters: value=4.9u
-
-  R1f: R
-    Nodes: 0 1
-    Parameters: value=71k
-
-  R1g: R
-    Nodes: 1 0
-    Parameters: value=79k
-
-  R1h: R
-    Nodes: 1 0
-    Parameters: value=68k
-
-  C1i: C
-    Nodes: 0 1
-    Parameters: value=2.4u
-
-  R1j: R
-    Nodes: 0 1
-    Parameters: value=463.0
-
-  R1k: R
-    Nodes: 0 1
-    Parameters: value=394.0
-
-  NMOS: R
-    Nodes: 0 2 3 1
-
-  C1m: C
-    Nodes: 1 2
-    Parameters: value=9.1u
-
-  R1n: R
-    Nodes: 2 0
-    Parameters: value=97k
-
-  R1o: R
-    Nodes: 0 1
-    Parameters: value=9k
-
-  PMOS: R
-    Nodes: 3 1 2 0
-
-  C1q: C
-    Nodes: 3 0
-    Parameters: value=79n
-
-  C1r: C
-    Nodes: 0 3
-    Parameters: value=72n
-
-  C1s: C
-    Nodes: 1 2
-    Parameters: value=624p
-
-  NMOS: R
-    Nodes: 0 1 2 3
-
-  R1u: R
-    Nodes: 1 3
-    Parameters: value=56.0
-
-  NMOS: R
-    Nodes: 0 2 1 3
-
-  PMOS: R
-    Nodes: 3 0 2 1
-
-  C1x: C
-    Nodes: 1 0
-    Parameters: value=6.5m
-
-  NMOS: R
-    Nodes: 2 0 3 1
-
-  R1z: R
-    Nodes: 3 1
-    Parameters: value=889.0
-
-  PMOS: R
-    Nodes: 1 2 3 0
-
-  C2b: C
-    Nodes: 3 2
-    Parameters: value=1.8m
-
-  R2c: R
-    Nodes: 2 0
-    Parameters: value=7k
-
-  C2d: C
-    Nodes: 1 3
-    Parameters: value=836p
-
-  C2e: C
-    Nodes: 2 1
-    Parameters: value=4.0m
-
-  R2f: R
-    Nodes: 2 3
-    Parameters: value=3.4M
-
-  C2g: C
-    Nodes: 3 2
-    Parameters: value=707p
-
-  C2h: C
-    Nodes: 2 0
-    Parameters: value=3.1u
-
-  PMOS: R
-    Nodes: 1 3 0 2
-
-  R2j: R
-    Nodes: 2 0
-    Parameters: value=843.0
-
-  R2k: R
-    Nodes: 0 2
-    Parameters: value=5k
-
-  C2l: C
-    Nodes: 0 3
-    Parameters: value=2.9u
-
-  C2m: C
-    Nodes: 0 1
-    Parameters: value=6.6u
-
-  R2n: R
-    Nodes: 0 1
-    Parameters: value=87k
-
-  PMOS: R
-    Nodes: 1 0 3 2
-
-  NMOS: R
-    Nodes: 2 1 0 3
-
-  NMOS: R
-    Nodes: 0 3 2 1
-
-  NMOS: R
-    Nodes: 2 0 3 1
-
-  PMOS: R
-    Nodes: 2 1 0 3
-
-  PMOS: R
-    Nodes: 0 1 3 2
-
-  C2u: C
-    Nodes: 2 1
-    Parameters: value=0.9u
-
-  NMOS: R
-    Nodes: 0 2 3 1
-
-  NMOS: R
-    Nodes: 0 3 2 1
-
-  PMOS: R
-    Nodes: 0 1 3 2
-
-  C2y: C
-    Nodes: 1 3
-    Parameters: value=6.6m
-
-  C2z: C
-    Nodes: 1 0
-    Parameters: value=9.2m
-
-  C3a: C
-    Nodes: 2 0
-    Parameters: value=2.1u
-
-  NMOS: R
-    Nodes: 1 2 3 0
-
-  C3c: C
-    Nodes: 2 1
-    Parameters: value=6.7u
-
-  PMOS: R
-    Nodes: 0 3 2 1
-
-  R3e: R
-    Nodes: 0 1
-    Parameters: value=73k
-
-  C3f: C
-    Nodes: 3 0
-    Parameters: value=9.2m
-
-  C3g: C
-    Nodes: 1 3
-    Parameters: value=63n
-
-  PMOS: R
-    Nodes: 3 1 0 2
-
-  R3i: R
-    Nodes: 1 3
-    Parameters: value=95k
-
-  R3j: R
-    Nodes: 2 0
-    Parameters: value=406.0
-
-  PMOS: R
-    Nodes: 0 2 1 3
-
-  NMOS: R
-    Nodes: 2 1 0 3
-
-  C3m: C
-    Nodes: 2 0
-    Parameters: value=94n
-
-  NMOS: R
-    Nodes: 1 0 2 3
-
-  C3o: C
-    Nodes: 0 1
-    Parameters: value=9.0u
-
-  C3p: C
-    Nodes: 3 1
-    Parameters: value=2.4m
-
-  C3q: C
-    Nodes: 3 2
-    Parameters: value=658p
-
-  R3r: R
-    Nodes: 2 0
-    Parameters: value=1.1M
-
-  C3s: C
-    Nodes: 2 1
-    Parameters: value=7.4u
-
-  C3t: C
-    Nodes: 2 1
-    Parameters: value=1.3u
-
-  R3u: R
-    Nodes: 2 3
-    Parameters: value=25k
-
-  R3v: R
-    Nodes: 3 2
-    Parameters: value=730.0
-
-  C3w: C
-    Nodes: 0 1
-    Parameters: value=478p
-
-  C3x: C
-    Nodes: 0 3
-    Parameters: value=85p
-
-  C3y: C
-    Nodes: 0 1
-    Parameters: value=8.9m
-
-  R3z: R
-    Nodes: 3 1
-    Parameters: value=150.0
-
-  C4a: C
-    Nodes: 0 2
-    Parameters: value=173p
-
-  R4b: R
-    Nodes: 2 3
-    Parameters: value=7.3M
-
-  C4c: C
-    Nodes: 3 0
-    Parameters: value=67n
-
-  R4d: R
-    Nodes: 0 1
-    Parameters: value=31k
-
-  NMOS: R
-    Nodes: 2 1 3 0
-
-  PMOS: R
-    Nodes: 3 2 1 0
-
-  PMOS: R
-    Nodes: 2 3 1 0
-
-  R4h: R
-    Nodes: 3 1
-    Parameters: value=1.4M
-
-  PMOS: R
-    Nodes: 2 3 0 1
-
-  PMOS: R
-    Nodes: 3 2 0 1
-
-  PMOS: R
-    Nodes: 3 0 2 1
-
-  R4l: R
-    Nodes: 3 2
-    Parameters: value=9.0M
-
-  R4m: R
-    Nodes: 3 1
-    Parameters: value=895.0
-
-  PMOS: R
-    Nodes: 1 0 3 2
-
-  PMOS: R
-    Nodes: 1 3 2 0
-
-  R4p: R
-    Nodes: 2 1
-    Parameters: value=0.8M
-
-  NMOS: R
-    Nodes: 2 3 1 0
-
-  R4r: R
-    Nodes: 0 2
-    Parameters: value=328.0
-
-  PMOS: R
-    Nodes: 2 1 0 3
-
-  NMOS: R
-    Nodes: 3 0 2 1
-
-  C4u: C
-    Nodes: 0 1
-    Parameters: value=6.1u
-
-  R4v: R
-    Nodes: 3 0
-    Parameters: value=4.6M
-
-
-# Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/100.sp" --compare "/mnt/d/proj/spice_netlist_parser/examples/100.sp" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples//100.json" --verbose
+2025-12-26 20:55:51,702 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100.sp
+2025-12-26 20:55:51,711 - spice_netlist_parser.cli - ERROR - Failed to parse /mnt/d/proj/spice_netlist_parser/examples/100.sp: File: /mnt/d/proj/spice_netlist_parser/examples/100.sp - Line 3 - Unexpected token at line 3: Unexpected token Token('MODEL_NAME', 'R1c') at line 3, column 1.
+Expected one of: 
+	* RESISTOR_NAME
+	* NEWLINE
+	* __ANON_4
+	* __ANON_7
+	* __ANON_0
+	* __ANON_8
+	* INDUCTOR_NAME
+	* VOLTAGE_NAME
+	* __ANON_10
+	* __ANON_9
+	* CAPACITOR_NAME
+	* BJT_NAME
+	* __ANON_2
+	* __ANON_3
+	* CURRENT_NAME
+	* __ANON_1
+	* __ANON_5
+	* SUBCKT_INST_NAME
+	* MOSFET_NAME
+	* DIODE_NAME
+	* COMPONENT_NAME
+
+
+# Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/100.sp" --compare "/mnt/d/proj/spice_netlist_parser/examples/100.sp" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples//100.json" 
 ------------------------------------------------------------
 [0;34mSPICE Netlist Parser[0m
 ====================
@@ -404,16 +48,90 @@ Note: Not in a virtual environment. Consider using one.
 -------------------
 [0;32mComparing:[0m /mnt/d/proj/spice_netlist_parser/examples/100.sp  <->  /mnt/d/proj/spice_netlist_parser/examples/100.sp
 
-2025-12-22 01:51:27,558 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100.sp
-2025-12-22 01:51:27,573 - spice_netlist_parser.parser - INFO - Successfully parsed 100 components, 0 models
-2025-12-22 01:51:27,574 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100.sp
-2025-12-22 01:51:27,587 - spice_netlist_parser.parser - INFO - Successfully parsed 100 components, 0 models
-Report written to /mnt/d/proj/spice_netlist_parser/examples/100.json
+2025-12-26 20:55:52,600 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100.sp
+Traceback (most recent call last):
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser_state.py", line 77, in feed_token
+    action, arg = states[state][token.type]
+KeyError: 'MODEL_NAME'
 
-[0;32mRunning parser...[0m
+During handling of the above exception, another exception occurred:
 
-2025-12-22 01:51:28,493 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100.sp
-2025-12-22 01:51:28,509 - spice_netlist_parser.parser - INFO - Successfully parsed 100 components, 0 models
-2025-12-22 01:51:28,509 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100.sp
-2025-12-22 01:51:28,523 - spice_netlist_parser.parser - INFO - Successfully parsed 100 components, 0 models
-Comparison report written to /mnt/d/proj/spice_netlist_parser/examples/100.json
+Traceback (most recent call last):
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 524, in parse_string
+    tree = self.parser.parse(processed_text, start="start")
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/lark.py", line 677, in parse
+    return self.parser.parse(text, start=start, on_error=on_error)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parser_frontends.py", line 131, in parse
+    return self.parser.parse(stream, chosen_start, **kw)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 42, in parse
+    return self.parser.parse(lexer, start)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 88, in parse
+    return self.parse_from_state(parser_state)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 111, in parse_from_state
+    raise e
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser.py", line 102, in parse_from_state
+    state.feed_token(token)
+  File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser_state.py", line 80, in feed_token
+    raise UnexpectedToken(token, expected, state=self, interactive_parser=None)
+lark.exceptions.UnexpectedToken: Unexpected token Token('MODEL_NAME', 'R1c') at line 3, column 1.
+Expected one of: 
+	* __ANON_10
+	* __ANON_3
+	* __ANON_0
+	* __ANON_1
+	* CURRENT_NAME
+	* DIODE_NAME
+	* INDUCTOR_NAME
+	* CAPACITOR_NAME
+	* VOLTAGE_NAME
+	* __ANON_2
+	* SUBCKT_INST_NAME
+	* __ANON_7
+	* __ANON_5
+	* MOSFET_NAME
+	* NEWLINE
+	* COMPONENT_NAME
+	* __ANON_9
+	* __ANON_8
+	* BJT_NAME
+	* RESISTOR_NAME
+	* __ANON_4
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<stdin>", line 36, in <module>
+  File "<stdin>", line 18, in main
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/comparison.py", line 319, in compare_files
+    left = p.parse_file(left_path)
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/parser.py", line 50, in parse_file
+    ast = self.ast_parser.parse_file(filepath)
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 470, in parse_file
+    return self.parse_string(content)
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 532, in parse_string
+    raise ParseError(msg, filename=self.filename, line_number=line_num) from e
+spice_netlist_parser.exceptions.ParseError: File: /mnt/d/proj/spice_netlist_parser/examples/100.sp - Line 3 - Unexpected token at line 3: Unexpected token Token('MODEL_NAME', 'R1c') at line 3, column 1.
+Expected one of: 
+	* __ANON_10
+	* __ANON_3
+	* __ANON_0
+	* __ANON_1
+	* CURRENT_NAME
+	* DIODE_NAME
+	* INDUCTOR_NAME
+	* CAPACITOR_NAME
+	* VOLTAGE_NAME
+	* __ANON_2
+	* SUBCKT_INST_NAME
+	* __ANON_7
+	* __ANON_5
+	* MOSFET_NAME
+	* NEWLINE
+	* COMPONENT_NAME
+	* __ANON_9
+	* __ANON_8
+	* BJT_NAME
+	* RESISTOR_NAME
+	* __ANON_4
+

@@ -1,0 +1,13 @@
+************************************************************************
+* Library Name: ICSN55H7RVT
+* Cell Name:    NOR2X1H7R
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT NOR2X1H7R A B VDD VSS Y
+*.PININFO A:I B:I Y:O VDD:B VSS:B
+MNM0 Y B VSS VSS nm1p2_svt_lp W=210n L=60n m=1
+MMN0 Y A VSS VSS nm1p2_svt_lp W=210n L=60n m=1
+MPM0 Y B net015 VDD pm1p2_svt_lp W=270n L=60n m=1
+MMP1 net015 A VDD VDD pm1p2_svt_lp W=270n L=60n m=1
+.ENDS
