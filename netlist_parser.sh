@@ -43,12 +43,13 @@ fi
 export PYTHONPATH="$PROJECT_DIR/src${PYTHONPATH:+:$PYTHONPATH}"
 
 print_help() {
-    echo "Usage: $0 <netlist_file> [options]"
+    echo "Usage: $0 <netlist_file> [netlist_file2 ...] [options]"
     echo ""
     echo "Parser options (passed through to CLI):"
     echo "  -f, --format <format>       Output format: text, json, summary (default: text)"
     echo "  -o, --output <file>         Output file path"
-    echo "  --ast                       Show AST structure"
+    echo "  --ast                       Show AST structure (single file only)"
+    echo "  --group-by-file             Group components by source file (multi-file only)"
     echo "  -v, --verbose               Verbose output"
     echo ""
     echo "Quality / accuracy options:"
@@ -61,7 +62,8 @@ print_help() {
     echo ""
     echo "Examples:"
     echo "  $0 examples/1k.sp"
-    echo "  $0 examples/1k.sp --format json --output result.json"
+    echo "  $0 examples/1k.sp examples/10k.sp --format json --output result.json"
+    echo "  $0 examples/gates/AND2.cdl examples/gates/INV.cdl --verbose"
     echo "  $0 examples/1k.sp --roundtrip"
     echo "  $0 examples/1k.sp --roundtrip --roundtrip-output rt.sp"
     echo "  $0 examples/1k.sp --compare examples/10k.sp"
@@ -140,9 +142,9 @@ while [ $# -gt 0 ]; do
     esac
 done
 
-# Check if file argument is provided (first passthrough arg is the input file)
+# Check if file arguments are provided
 if [ ${#PASSTHROUGH_ARGS[@]} -eq 0 ]; then
-    echo -e "${RED}Error:${NC} netlist file argument is required"
+    echo -e "${RED}Error:${NC} netlist file argument(s) are required"
     echo ""
     print_help
     exit 1
@@ -150,6 +152,10 @@ fi
 
 # Round-trip validation (conversion accuracy check)
 if [ "$ROUNDTRIP" -eq 1 ]; then
+    if [ ${#PASSTHROUGH_ARGS[@]} -gt 1 ]; then
+        echo -e "${RED}Error:${NC} Round-trip validation only supports single files"
+        exit 1
+    fi
     NETLIST_FILE="${PASSTHROUGH_ARGS[0]}"
     if [ ! -f "$NETLIST_FILE" ]; then
         echo -e "${RED}Error:${NC} File not found: $NETLIST_FILE"
@@ -208,6 +214,10 @@ fi
 
 # Compare two SPICE files (semantic comparison on parsed Netlist models)
 if [ -n "$COMPARE_FILE" ]; then
+    if [ ${#PASSTHROUGH_ARGS[@]} -gt 1 ]; then
+        echo -e "${RED}Error:${NC} File comparison only supports single files"
+        exit 1
+    fi
     NETLIST_FILE="${PASSTHROUGH_ARGS[0]}"
     if [ ! -f "$NETLIST_FILE" ]; then
         echo -e "${RED}Error:${NC} File not found: $NETLIST_FILE"
@@ -276,12 +286,12 @@ echo ""
 
 # Determine the command to run based on mode
 if [ -n "$COMPARE_FILE" ]; then
-    # Compare mode
+    # Compare mode (single file comparison)
     $PYTHON_CMD -m spice_netlist_parser.cli compare "${PASSTHROUGH_ARGS[0]}" "$COMPARE_FILE" --format "$COMPARE_FORMAT" ${COMPARE_OUTPUT:+--output "$COMPARE_OUTPUT"}
 elif [ "$ROUNDTRIP" -eq 1 ]; then
-    # Roundtrip mode
+    # Roundtrip mode (single file validation)
     $PYTHON_CMD -m spice_netlist_parser.cli roundtrip "${PASSTHROUGH_ARGS[0]}" ${ROUNDTRIP_OUTPUT:+--output "$ROUNDTRIP_OUTPUT"}
 else
-    # Normal parse mode
-    $PYTHON_CMD -m spice_netlist_parser.cli parse "${PASSTHROUGH_ARGS[0]}" --verbose
+    # Normal parse mode (supports multiple files)
+    $PYTHON_CMD -m spice_netlist_parser.cli parse "${PASSTHROUGH_ARGS[@]}" --verbose
 fi

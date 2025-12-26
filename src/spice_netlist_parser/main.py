@@ -77,12 +77,13 @@ Environment Variables:
     # Parse command
     parse_parser = subparsers.add_parser(
         "parse",
-        help="Parse a SPICE netlist file",
+        help="Parse one or more SPICE netlist files",
     )
     parse_parser.add_argument(
-        "file",
+        "files",
         type=Path,
-        help="SPICE netlist file to parse",
+        nargs="+",
+        help="SPICE netlist files to parse",
     )
     parse_parser.add_argument(
         "-f",
@@ -107,6 +108,11 @@ Environment Variables:
         "--verbose",
         action="store_true",
         help="Verbose output with detailed information",
+    )
+    parse_parser.add_argument(
+        "--group-by-file",
+        action="store_true",
+        help="Group components by source file (multi-file only)",
     )
 
     # Compare command
