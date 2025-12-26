@@ -108,8 +108,12 @@ class ASTBuilder:
             """Collect node tokens from any `node` subtrees."""
 
             nonlocal nodes
+            if subtree.data == "param_or_value":
+                return
             for ch in subtree.children:
-                if isinstance(ch, Tree):
+                if isinstance(ch, Token):
+                    nodes.append(ch.value)
+                elif isinstance(ch, Tree):
                     if ch.data == "node":
                         nodes.extend(
                             t.value for t in ch.children if isinstance(t, Token)

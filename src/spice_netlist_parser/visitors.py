@@ -113,7 +113,9 @@ class NetlistTransformer(ASTVisitor):
         for stmt in node.statements:
             result = stmt.accept(self)
             if isinstance(result, Component):
-                components.append(result)
+                # Filter out invalid components with less than 2 nodes
+                if len(result.nodes) >= 2:
+                    components.append(result)
             elif isinstance(result, dict):
                 if "model" in result:
                     models.update(result["model"])

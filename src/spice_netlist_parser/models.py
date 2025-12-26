@@ -46,7 +46,8 @@ class Component:
         Raises:
             ValueError: If component has insufficient nodes
         """
-        if len(self.nodes) < MIN_COMPONENT_NODES:
+        # Allow components with 0 nodes for now (they will be filtered out later)
+        if len(self.nodes) < MIN_COMPONENT_NODES and len(self.nodes) > 0:
             msg = f"Component {self.name} must have at least {MIN_COMPONENT_NODES} nodes, got {len(self.nodes)}"
             raise ValueError(msg)
 

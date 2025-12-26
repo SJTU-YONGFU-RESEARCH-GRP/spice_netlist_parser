@@ -1,4 +1,4 @@
-# 2025-12-26T20:55:56+08:00
+# 2025-12-26T21:59:50+08:00
 # Input: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
 # JSON output: /mnt/d/proj/spice_netlist_parser/examples//10k.json
 # Compare output: /mnt/d/proj/spice_netlist_parser/examples//10k.json
@@ -11,30 +11,36 @@ Note: Not in a virtual environment. Consider using one.
 
 [0;32mRunning parser...[0m
 
-2025-12-26 20:55:58,330 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
-2025-12-26 20:55:58,535 - spice_netlist_parser.cli - ERROR - Failed to parse /mnt/d/proj/spice_netlist_parser/examples/10k.sp: File: /mnt/d/proj/spice_netlist_parser/examples/10k.sp - Line 2 - Unexpected token at line 2: Unexpected token Token('MODEL_NAME', 'R1b') at line 2, column 1.
+2025-12-26 21:59:51,636 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
+2025-12-26 21:59:51,784 - spice_netlist_parser.cli - ERROR - Failed to parse /mnt/d/proj/spice_netlist_parser/examples/10k.sp: File: /mnt/d/proj/spice_netlist_parser/examples/10k.sp - Line 1 - Unexpected token at line 1: Unexpected token Token('MODEL_NAME', '13') at line 1, column 12.
 Expected one of: 
-	* INDUCTOR_NAME
-	* __ANON_7
-	* CAPACITOR_NAME
-	* DIODE_NAME
-	* __ANON_1
 	* RESISTOR_NAME
-	* MOSFET_NAME
-	* SUBCKT_INST_NAME
-	* __ANON_0
-	* __ANON_5
-	* COMPONENT_NAME
-	* __ANON_8
-	* __ANON_9
-	* BJT_NAME
-	* CURRENT_NAME
-	* __ANON_4
-	* NEWLINE
-	* __ANON_2
+	* CAPACITOR_NAME
 	* VOLTAGE_NAME
-	* __ANON_10
+	* FUNCTION_CALL
+	* __ANON_6
+	* __ANON_7
+	* ZERO
+	* COMPONENT_NAME
+	* SUBCKT_INST_NAME
+	* STRING
+	* __ANON_0
 	* __ANON_3
+	* SIGNED_NUMBER
+	* CURRENT_NAME
+	* NEWLINE
+	* DIODE_NAME
+	* INDUCTOR_NAME
+	* __ANON_8
+	* __ANON_10
+	* PARAM_ASSIGN
+	* __ANON_4
+	* __ANON_9
+	* PARAM_NAME
+	* __ANON_1
+	* BJT_NAME
+	* MOSFET_NAME
+	* __ANON_2
 
 
 # Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/10k.sp" --compare "/mnt/d/proj/spice_netlist_parser/examples/10k.sp" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples//10k.json" 
@@ -48,7 +54,7 @@ Note: Not in a virtual environment. Consider using one.
 -------------------
 [0;32mComparing:[0m /mnt/d/proj/spice_netlist_parser/examples/10k.sp  <->  /mnt/d/proj/spice_netlist_parser/examples/10k.sp
 
-2025-12-26 20:55:59,421 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
+2025-12-26 21:59:52,876 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/10k.sp
 Traceback (most recent call last):
   File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser_state.py", line 77, in feed_token
     action, arg = states[state][token.type]
@@ -73,29 +79,35 @@ Traceback (most recent call last):
     state.feed_token(token)
   File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser_state.py", line 80, in feed_token
     raise UnexpectedToken(token, expected, state=self, interactive_parser=None)
-lark.exceptions.UnexpectedToken: Unexpected token Token('MODEL_NAME', 'R1b') at line 2, column 1.
+lark.exceptions.UnexpectedToken: Unexpected token Token('MODEL_NAME', '13') at line 1, column 12.
 Expected one of: 
-	* SUBCKT_INST_NAME
-	* MOSFET_NAME
-	* COMPONENT_NAME
-	* INDUCTOR_NAME
-	* __ANON_8
-	* VOLTAGE_NAME
-	* __ANON_1
-	* BJT_NAME
-	* __ANON_5
-	* CAPACITOR_NAME
-	* __ANON_7
-	* __ANON_10
-	* __ANON_0
-	* __ANON_4
-	* NEWLINE
-	* CURRENT_NAME
-	* __ANON_3
 	* __ANON_2
-	* DIODE_NAME
 	* __ANON_9
+	* ZERO
+	* CAPACITOR_NAME
+	* VOLTAGE_NAME
+	* __ANON_7
 	* RESISTOR_NAME
+	* __ANON_3
+	* NEWLINE
+	* PARAM_NAME
+	* __ANON_4
+	* __ANON_6
+	* INDUCTOR_NAME
+	* DIODE_NAME
+	* CURRENT_NAME
+	* __ANON_1
+	* SIGNED_NUMBER
+	* COMPONENT_NAME
+	* __ANON_10
+	* __ANON_8
+	* PARAM_ASSIGN
+	* STRING
+	* MOSFET_NAME
+	* FUNCTION_CALL
+	* SUBCKT_INST_NAME
+	* __ANON_0
+	* BJT_NAME
 
 
 The above exception was the direct cause of the following exception:
@@ -111,27 +123,33 @@ Traceback (most recent call last):
     return self.parse_string(content)
   File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 532, in parse_string
     raise ParseError(msg, filename=self.filename, line_number=line_num) from e
-spice_netlist_parser.exceptions.ParseError: File: /mnt/d/proj/spice_netlist_parser/examples/10k.sp - Line 2 - Unexpected token at line 2: Unexpected token Token('MODEL_NAME', 'R1b') at line 2, column 1.
+spice_netlist_parser.exceptions.ParseError: File: /mnt/d/proj/spice_netlist_parser/examples/10k.sp - Line 1 - Unexpected token at line 1: Unexpected token Token('MODEL_NAME', '13') at line 1, column 12.
 Expected one of: 
-	* SUBCKT_INST_NAME
-	* MOSFET_NAME
-	* COMPONENT_NAME
-	* INDUCTOR_NAME
-	* __ANON_8
-	* VOLTAGE_NAME
-	* __ANON_1
-	* BJT_NAME
-	* __ANON_5
-	* CAPACITOR_NAME
-	* __ANON_7
-	* __ANON_10
-	* __ANON_0
-	* __ANON_4
-	* NEWLINE
-	* CURRENT_NAME
-	* __ANON_3
 	* __ANON_2
-	* DIODE_NAME
 	* __ANON_9
+	* ZERO
+	* CAPACITOR_NAME
+	* VOLTAGE_NAME
+	* __ANON_7
 	* RESISTOR_NAME
+	* __ANON_3
+	* NEWLINE
+	* PARAM_NAME
+	* __ANON_4
+	* __ANON_6
+	* INDUCTOR_NAME
+	* DIODE_NAME
+	* CURRENT_NAME
+	* __ANON_1
+	* SIGNED_NUMBER
+	* COMPONENT_NAME
+	* __ANON_10
+	* __ANON_8
+	* PARAM_ASSIGN
+	* STRING
+	* MOSFET_NAME
+	* FUNCTION_CALL
+	* SUBCKT_INST_NAME
+	* __ANON_0
+	* BJT_NAME
 
