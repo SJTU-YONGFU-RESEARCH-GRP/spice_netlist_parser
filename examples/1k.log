@@ -1,4 +1,4 @@
-# 2025-12-26T21:59:53+08:00
+# 2025-12-27T15:56:19+08:00
 # Input: /mnt/d/proj/spice_netlist_parser/examples/1k.sp
 # JSON output: /mnt/d/proj/spice_netlist_parser/examples//1k.json
 # Compare output: /mnt/d/proj/spice_netlist_parser/examples//1k.json
@@ -11,36 +11,30 @@ Note: Not in a virtual environment. Consider using one.
 
 [0;32mRunning parser...[0m
 
-2025-12-26 21:59:54,999 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/1k.sp
-2025-12-26 21:59:55,020 - spice_netlist_parser.cli - ERROR - Failed to parse /mnt/d/proj/spice_netlist_parser/examples/1k.sp: File: /mnt/d/proj/spice_netlist_parser/examples/1k.sp - Line 3 - Unexpected token at line 3: Unexpected token Token('MODEL_NAME', 'AD') at line 3, column 34.
+2025-12-27 15:56:20,146 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/1k.sp
+2025-12-27 15:56:20,187 - spice_netlist_parser.cli - ERROR - Failed to parse files: File: /mnt/d/proj/spice_netlist_parser/examples/1k.sp - Line 2 - Unexpected token at line 2: Unexpected token Token('MODEL_NAME', 'R1b') at line 2, column 1.
 Expected one of: 
-	* __ANON_0
-	* CURRENT_NAME
-	* __ANON_1
-	* SIGNED_NUMBER
-	* SUBCKT_INST_NAME
-	* COMPONENT_NAME
-	* __ANON_4
-	* BJT_NAME
-	* __ANON_8
 	* __ANON_9
-	* DIODE_NAME
-	* VOLTAGE_NAME
-	* __ANON_10
-	* __ANON_7
+	* BJT_NAME
+	* COMPONENT_NAME
 	* CAPACITOR_NAME
-	* STRING
-	* ZERO
-	* FUNCTION_CALL
 	* NEWLINE
-	* __ANON_6
+	* DIODE_NAME
+	* __ANON_4
+	* __ANON_0
 	* MOSFET_NAME
-	* __ANON_2
-	* RESISTOR_NAME
-	* PARAM_NAME
+	* CURRENT_NAME
+	* __ANON_7
 	* INDUCTOR_NAME
 	* __ANON_3
-	* PARAM_ASSIGN
+	* RESISTOR_NAME
+	* __ANON_1
+	* VOLTAGE_NAME
+	* __ANON_10
+	* __ANON_8
+	* __ANON_2
+	* SUBCKT_INST_NAME
+	* __ANON_6
 
 
 # Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/1k.sp" --compare "/mnt/d/proj/spice_netlist_parser/examples/1k.sp" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples//1k.json" 
@@ -54,7 +48,7 @@ Note: Not in a virtual environment. Consider using one.
 -------------------
 [0;32mComparing:[0m /mnt/d/proj/spice_netlist_parser/examples/1k.sp  <->  /mnt/d/proj/spice_netlist_parser/examples/1k.sp
 
-2025-12-26 21:59:56,190 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/1k.sp
+2025-12-27 15:56:20,994 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/1k.sp
 Traceback (most recent call last):
   File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser_state.py", line 77, in feed_token
     action, arg = states[state][token.type]
@@ -63,7 +57,7 @@ KeyError: 'MODEL_NAME'
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 524, in parse_string
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 528, in parse_string
     tree = self.parser.parse(processed_text, start="start")
   File "/home/yongfu/.local/lib/python3.10/site-packages/lark/lark.py", line 677, in parse
     return self.parser.parse(text, start=start, on_error=on_error)
@@ -79,35 +73,29 @@ Traceback (most recent call last):
     state.feed_token(token)
   File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser_state.py", line 80, in feed_token
     raise UnexpectedToken(token, expected, state=self, interactive_parser=None)
-lark.exceptions.UnexpectedToken: Unexpected token Token('MODEL_NAME', 'AD') at line 3, column 34.
+lark.exceptions.UnexpectedToken: Unexpected token Token('MODEL_NAME', 'R1b') at line 2, column 1.
 Expected one of: 
-	* BJT_NAME
-	* SIGNED_NUMBER
-	* __ANON_10
-	* __ANON_8
-	* VOLTAGE_NAME
 	* __ANON_4
-	* __ANON_2
-	* PARAM_NAME
-	* ZERO
-	* MOSFET_NAME
-	* STRING
-	* INDUCTOR_NAME
-	* COMPONENT_NAME
-	* __ANON_7
-	* __ANON_1
-	* __ANON_9
-	* CURRENT_NAME
-	* RESISTOR_NAME
-	* SUBCKT_INST_NAME
-	* PARAM_ASSIGN
-	* NEWLINE
-	* FUNCTION_CALL
-	* __ANON_0
-	* __ANON_6
 	* DIODE_NAME
+	* INDUCTOR_NAME
+	* __ANON_10
+	* __ANON_6
+	* __ANON_7
+	* SUBCKT_INST_NAME
+	* MOSFET_NAME
 	* CAPACITOR_NAME
+	* __ANON_0
+	* VOLTAGE_NAME
 	* __ANON_3
+	* __ANON_8
+	* NEWLINE
+	* __ANON_2
+	* CURRENT_NAME
+	* __ANON_9
+	* RESISTOR_NAME
+	* __ANON_1
+	* COMPONENT_NAME
+	* BJT_NAME
 
 
 The above exception was the direct cause of the following exception:
@@ -119,37 +107,31 @@ Traceback (most recent call last):
     left = p.parse_file(left_path)
   File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/parser.py", line 50, in parse_file
     ast = self.ast_parser.parse_file(filepath)
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 470, in parse_file
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 474, in parse_file
     return self.parse_string(content)
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 532, in parse_string
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 536, in parse_string
     raise ParseError(msg, filename=self.filename, line_number=line_num) from e
-spice_netlist_parser.exceptions.ParseError: File: /mnt/d/proj/spice_netlist_parser/examples/1k.sp - Line 3 - Unexpected token at line 3: Unexpected token Token('MODEL_NAME', 'AD') at line 3, column 34.
+spice_netlist_parser.exceptions.ParseError: File: /mnt/d/proj/spice_netlist_parser/examples/1k.sp - Line 2 - Unexpected token at line 2: Unexpected token Token('MODEL_NAME', 'R1b') at line 2, column 1.
 Expected one of: 
-	* BJT_NAME
-	* SIGNED_NUMBER
-	* __ANON_10
-	* __ANON_8
-	* VOLTAGE_NAME
 	* __ANON_4
-	* __ANON_2
-	* PARAM_NAME
-	* ZERO
-	* MOSFET_NAME
-	* STRING
-	* INDUCTOR_NAME
-	* COMPONENT_NAME
-	* __ANON_7
-	* __ANON_1
-	* __ANON_9
-	* CURRENT_NAME
-	* RESISTOR_NAME
-	* SUBCKT_INST_NAME
-	* PARAM_ASSIGN
-	* NEWLINE
-	* FUNCTION_CALL
-	* __ANON_0
-	* __ANON_6
 	* DIODE_NAME
+	* INDUCTOR_NAME
+	* __ANON_10
+	* __ANON_6
+	* __ANON_7
+	* SUBCKT_INST_NAME
+	* MOSFET_NAME
 	* CAPACITOR_NAME
+	* __ANON_0
+	* VOLTAGE_NAME
 	* __ANON_3
+	* __ANON_8
+	* NEWLINE
+	* __ANON_2
+	* CURRENT_NAME
+	* __ANON_9
+	* RESISTOR_NAME
+	* __ANON_1
+	* COMPONENT_NAME
+	* BJT_NAME
 

@@ -1,4 +1,4 @@
-# 2025-12-26T21:59:44+08:00
+# 2025-12-27T15:56:13+08:00
 # Input: /mnt/d/proj/spice_netlist_parser/examples/100k.sp
 # JSON output: /mnt/d/proj/spice_netlist_parser/examples//100k.json
 # Compare output: /mnt/d/proj/spice_netlist_parser/examples//100k.json
@@ -11,36 +11,36 @@ Note: Not in a virtual environment. Consider using one.
 
 [0;32mRunning parser...[0m
 
-2025-12-26 21:59:46,298 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100k.sp
-2025-12-26 21:59:47,355 - spice_netlist_parser.cli - ERROR - Failed to parse /mnt/d/proj/spice_netlist_parser/examples/100k.sp: File: /mnt/d/proj/spice_netlist_parser/examples/100k.sp - Line 1 - Unexpected token at line 1: Unexpected token Token('MODEL_NAME', '19') at line 1, column 12.
+2025-12-27 15:56:14,210 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100k.sp
+2025-12-27 15:56:14,938 - spice_netlist_parser.cli - ERROR - Failed to parse files: File: /mnt/d/proj/spice_netlist_parser/examples/100k.sp - Line 1 - Unexpected token at line 1: Unexpected token Token('MODEL_NAME', '19') at line 1, column 12.
 Expected one of: 
-	* FUNCTION_CALL
-	* MOSFET_NAME
-	* __ANON_0
-	* CAPACITOR_NAME
-	* VOLTAGE_NAME
-	* COMPONENT_NAME
-	* __ANON_3
-	* __ANON_9
 	* PARAM_ASSIGN
 	* __ANON_2
-	* __ANON_8
+	* __ANON_9
+	* NEWLINE
 	* __ANON_1
-	* BJT_NAME
-	* PARAM_NAME
-	* __ANON_7
 	* RESISTOR_NAME
+	* __ANON_8
+	* DIODE_NAME
+	* SUBCKT_INST_NAME
+	* VOLTAGE_NAME
+	* __ANON_3
+	* PARAM_NAME
+	* BJT_NAME
+	* INDUCTOR_NAME
+	* __ANON_0
+	* COMPONENT_NAME
+	* STRING
+	* __ANON_7
+	* __ANON_10
+	* ZERO
+	* CURRENT_NAME
+	* CAPACITOR_NAME
 	* __ANON_4
 	* SIGNED_NUMBER
-	* NEWLINE
-	* STRING
-	* INDUCTOR_NAME
-	* ZERO
-	* SUBCKT_INST_NAME
-	* DIODE_NAME
-	* __ANON_10
 	* __ANON_6
-	* CURRENT_NAME
+	* MOSFET_NAME
+	* FUNCTION_CALL
 
 
 # Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/100k.sp" --compare "/mnt/d/proj/spice_netlist_parser/examples/100k.sp" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples//100k.json" 
@@ -54,7 +54,7 @@ Note: Not in a virtual environment. Consider using one.
 -------------------
 [0;32mComparing:[0m /mnt/d/proj/spice_netlist_parser/examples/100k.sp  <->  /mnt/d/proj/spice_netlist_parser/examples/100k.sp
 
-2025-12-26 21:59:48,531 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100k.sp
+2025-12-27 15:56:15,729 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/100k.sp
 Traceback (most recent call last):
   File "/home/yongfu/.local/lib/python3.10/site-packages/lark/parsers/lalr_parser_state.py", line 77, in feed_token
     action, arg = states[state][token.type]
@@ -63,7 +63,7 @@ KeyError: 'MODEL_NAME'
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 524, in parse_string
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 528, in parse_string
     tree = self.parser.parse(processed_text, start="start")
   File "/home/yongfu/.local/lib/python3.10/site-packages/lark/lark.py", line 677, in parse
     return self.parser.parse(text, start=start, on_error=on_error)
@@ -81,33 +81,33 @@ Traceback (most recent call last):
     raise UnexpectedToken(token, expected, state=self, interactive_parser=None)
 lark.exceptions.UnexpectedToken: Unexpected token Token('MODEL_NAME', '19') at line 1, column 12.
 Expected one of: 
-	* __ANON_1
-	* RESISTOR_NAME
-	* __ANON_10
-	* SUBCKT_INST_NAME
-	* __ANON_0
-	* VOLTAGE_NAME
-	* __ANON_7
-	* __ANON_4
-	* DIODE_NAME
+	* INDUCTOR_NAME
 	* PARAM_NAME
-	* CURRENT_NAME
-	* __ANON_9
+	* DIODE_NAME
+	* NEWLINE
+	* __ANON_2
 	* COMPONENT_NAME
+	* SUBCKT_INST_NAME
+	* BJT_NAME
+	* __ANON_9
+	* FUNCTION_CALL
 	* MOSFET_NAME
 	* SIGNED_NUMBER
-	* __ANON_3
-	* ZERO
-	* __ANON_6
-	* __ANON_8
-	* PARAM_ASSIGN
-	* __ANON_2
-	* FUNCTION_CALL
-	* INDUCTOR_NAME
-	* NEWLINE
-	* BJT_NAME
 	* CAPACITOR_NAME
+	* PARAM_ASSIGN
+	* __ANON_4
+	* RESISTOR_NAME
+	* VOLTAGE_NAME
+	* __ANON_7
+	* __ANON_6
+	* __ANON_10
+	* ZERO
+	* __ANON_3
+	* __ANON_1
+	* __ANON_0
+	* __ANON_8
 	* STRING
+	* CURRENT_NAME
 
 
 The above exception was the direct cause of the following exception:
@@ -119,37 +119,37 @@ Traceback (most recent call last):
     left = p.parse_file(left_path)
   File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/parser.py", line 50, in parse_file
     ast = self.ast_parser.parse_file(filepath)
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 470, in parse_file
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 474, in parse_file
     return self.parse_string(content)
-  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 532, in parse_string
+  File "/mnt/d/proj/spice_netlist_parser/src/spice_netlist_parser/ast_parser.py", line 536, in parse_string
     raise ParseError(msg, filename=self.filename, line_number=line_num) from e
 spice_netlist_parser.exceptions.ParseError: File: /mnt/d/proj/spice_netlist_parser/examples/100k.sp - Line 1 - Unexpected token at line 1: Unexpected token Token('MODEL_NAME', '19') at line 1, column 12.
 Expected one of: 
-	* __ANON_1
-	* RESISTOR_NAME
-	* __ANON_10
-	* SUBCKT_INST_NAME
-	* __ANON_0
-	* VOLTAGE_NAME
-	* __ANON_7
-	* __ANON_4
-	* DIODE_NAME
+	* INDUCTOR_NAME
 	* PARAM_NAME
-	* CURRENT_NAME
-	* __ANON_9
+	* DIODE_NAME
+	* NEWLINE
+	* __ANON_2
 	* COMPONENT_NAME
+	* SUBCKT_INST_NAME
+	* BJT_NAME
+	* __ANON_9
+	* FUNCTION_CALL
 	* MOSFET_NAME
 	* SIGNED_NUMBER
-	* __ANON_3
-	* ZERO
-	* __ANON_6
-	* __ANON_8
-	* PARAM_ASSIGN
-	* __ANON_2
-	* FUNCTION_CALL
-	* INDUCTOR_NAME
-	* NEWLINE
-	* BJT_NAME
 	* CAPACITOR_NAME
+	* PARAM_ASSIGN
+	* __ANON_4
+	* RESISTOR_NAME
+	* VOLTAGE_NAME
+	* __ANON_7
+	* __ANON_6
+	* __ANON_10
+	* ZERO
+	* __ANON_3
+	* __ANON_1
+	* __ANON_0
+	* __ANON_8
 	* STRING
+	* CURRENT_NAME
 

@@ -11,14 +11,14 @@ FUNCTION_CALL.28: /[A-Za-z_][A-Za-z0-9_]*\([^)]*\)/
 
 // Component names start with designator and must include at least one digit
 RESISTOR_NAME.27: /R[0-9][A-Za-z0-9_]*/
-CAPACITOR_NAME.27: /C[A-Za-z0-9_]+/
+CAPACITOR_NAME.28: /C[A-Za-z0-9_]+/
 INDUCTOR_NAME.27: /L[0-9][A-Za-z0-9_]*/
-VOLTAGE_NAME.27: /V[0-9][A-Za-z0-9_]*|V[A-Za-z0-9_]{3,}/
+VOLTAGE_NAME.31: /V[0-9][A-Za-z0-9_]*|V[A-Za-z0-9_]{2,}/
 CURRENT_NAME.27: /I[0-9][A-Za-z0-9_]*/
-MOSFET_NAME.27: /M[0-9][A-Za-z0-9_]*|M[A-Za-z0-9_]{3,}/
+MOSFET_NAME.32: /M[A-Za-z0-9_]+/
 BJT_NAME.27: /Q[0-9][A-Za-z0-9_]*/
 DIODE_NAME.27: /D[0-9][A-Za-z0-9_]*/
-SUBCKT_INST_NAME.27: /X[A-Za-z0-9_]+/
+SUBCKT_INST_NAME.28: /X[A-Za-z0-9_]+/
 
 // Fallback component name (must come after specific primitives)
 COMPONENT_NAME.5: /[RCLVIMQDX][A-Za-z0-9_]{3,}/
@@ -54,28 +54,29 @@ mosfet_component: MOSFET_NAME node node node node MODEL_NAME param_or_value*
                 | MOSFET_NAME node node node node node (MODEL_NAME | NODE_NAME | SUBCKT_NAME) param_or_value*
 bjt_component: BJT_NAME node3 MODEL_NAME param_or_value*
              | BJT_NAME node4 MODEL_NAME param_or_value*
-subckt_instance: SUBCKT_INST_NAME node_list ["/"] MODEL_NAME param_or_value*
+subckt_instance: SUBCKT_INST_NAME node_list "/" MODEL_NAME param_or_value*
+                | SUBCKT_INST_NAME node_list MODEL_NAME param_or_value*
 
 // Subcircuit names
-SUBCKT_NAME.20: /(?![X])[A-Z][A-Za-z0-9_]+/
+SUBCKT_NAME.26: /(?![X])[A-Z][A-Za-z0-9_]+/
 
 // Model names (require uppercase letter to distinguish from simple node names)
-MODEL_NAME.26: /[A-Za-z_]*([A-Z]|[0-9_])[A-Za-z0-9_]+/
+MODEL_NAME.27: /[A-Za-z_]*([A-Z]|[0-9_])[A-Za-z0-9_]+/
 
 // Parameter names (short) only when immediately followed by '='
 PARAM_NAME.3: /(?![RCLVIMQDX][0-9])(?![A-Za-z_][A-Za-z0-9_]*\()[A-Za-z_][A-Za-z0-9_]{0,3}(?==)/
 
-node: SIGNED_NUMBER | ZERO | NODE_NAME | MODEL_NAME | SUBCKT_NAME
+node: SIGNED_NUMBER | ZERO | NODE_NAME | MODEL_NAME | SUBCKT_NAME | VOLTAGE_NAME | CAPACITOR_NAME
 ZERO.11: "0"
 // Node names: avoid component designators, must not be function call
-NODE_NAME.6: /(?![RCLVIMQDX][0-9])(?![A-Za-z_][A-Za-z0-9_]*\()[A-Za-z_][A-Za-z0-9_.-]*/
+NODE_NAME.25: /(?![RCLVIMQDX][0-9])(?![A-Za-z_][A-Za-z0-9_]*\()[A-Za-z_][A-Za-z0-9_.-]*/
 
 // Component body: optional leading model name followed by parameters/values (FUNCTION_CALL handled via value)
 component_body: MODEL_NAME param_or_value*
               | param_or_value+
 
 // Allow compact param assignments like L=0.25u as a single token
-PARAM_ASSIGN.17: /[A-Za-z][A-Za-z0-9_]*=[^ \t\r\n]+/
+PARAM_ASSIGN.26: /[A-Za-z][A-Za-z0-9_]*=[^ \t\r\n]+/
 param_or_value: parameter | value | PARAM_ASSIGN
 
 parameter: PARAM_NAME "=" value
