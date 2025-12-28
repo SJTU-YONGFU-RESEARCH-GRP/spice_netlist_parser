@@ -653,8 +653,29 @@ class SpiceASTParser:
         if current_line:
             lines.append(current_line)
 
+        # Post-process: Add '/' separator to subcircuit instances that don't have it
+        import re
+        processed_lines = []
+        for line in lines:
+            # Check if line is a subcircuit instance (starts with X) and doesn't have '/'
+            if re.match(r'^X[A-Za-z0-9_]+\s+', line) and '/' not in line:
+                # Find MODEL_NAME (3+ uppercase chars or has underscore) followed by PARAM_ASSIGN
+                # Insert '/' before the MODEL_NAME
+                # Pattern: ... <MODEL_NAME> <param>=...
+                parts = line.split()
+                for i in range(len(parts) - 1, 0, -1):
+                    # Check if this part looks like MODEL_NAME (3+ uppercase or has underscore)
+                    if re.match(r'^[A-Z]{3,}[A-Za-z0-9_]*$', parts[i]) or '_' in parts[i]:
+                        # Check if next part is PARAM_ASSIGN
+                        if i + 1 < len(parts) and '=' in parts[i + 1]:
+                            # Insert '/' before this MODEL_NAME
+                            parts.insert(i, '/')
+                            line = ' '.join(parts)
+                            break
+            processed_lines.append(line)
+
         # Join with newlines to preserve statement boundaries.
-        return "\n".join(lines)
+        return "\n".join(processed_lines)
 
     @staticmethod
     def _strip_inline_comment(line: str) -> str:

@@ -14,36 +14,31 @@ VCLK CK VSS PULSE(0 1.8 0 50p 50p 0.5n 1n)
 * Data input (changes on falling clock edge to test setup time)
 VDATA D VSS PULSE(0 1.8 0.25n 50p 50p 0.5n 1n)
 
-* DFFX1 instantiation (simplified - would need subcircuits expanded)
-* XI2 net46 CKP CKN VDD VSS net33 / TSINV
-* XXI6 D CKN CKP VDD VSS net33 / TSINV
-* XI3 net46 CKP CKN VDD VSS net25 / TSINV
-* XI4 net9 CKN CKP VDD VSS net25 / TSINV
-* XI1 net33 VDD VSS net46 / INV
-* XI0 CKN VDD VSS CKP / INV
-* XXI12 net25 VDD VSS Q / INV
-* XXI10 net25 VDD VSS net9 / INV
-* XI5 net9 VDD VSS QN / INV
-* XXI4 CK VDD VSS CKN / INV
+* Subcircuit definitions (extracted from ics55_LLSC_H7CR.cdl)
+* Note: Subcircuits use parameters (nw, nl, pw, pl) that are passed from instances
 
-* Simplified DFF model for testing (master-slave concept)
-* Master latch
-MM1 net_master D CLK net_master VDD pm1p2_svt_lp W=190n L=60n
-MM2 net_master D CLKB VSS VSS nm1p2_svt_lp W=150n L=60n
+.SUBCKT INV A VDD VSS Y
+MMN0 Y A VSS VSS nm1p2_svt_lp W=nw L=nl m=1
+MMP0 Y A VDD VDD pm1p2_svt_lp W=pw L=pl m=1
+.ENDS
 
-* Slave latch
-MM3 Q net_master CLKB Q VDD pm1p2_svt_lp W=190n L=60n
-MM4 Q net_master CLK VSS VSS nm1p2_svt_lp W=150n L=60n
+.SUBCKT TSINV A CK CKN VDD VSS Y
+MMN0 Y CK net18 VSS nm1p2_svt_lp W=nw L=nl m=1
+MMN1 net18 A VSS VSS nm1p2_svt_lp W=nw L=nl m=1
+MMP1 net024 A VDD VDD pm1p2_svt_lp W=pw L=pl m=1
+MMP0 Y CKN net024 VDD pm1p2_svt_lp W=pw L=pl m=1
+.ENDS
 
-* Inverted output
-MM5 QN Q VSS VSS nm1p2_svt_lp W=150n L=60n
-MM6 QN Q VDD VDD pm1p2_svt_lp W=190n L=60n
-
-* Clock buffer
-MM7 CLK CK VSS VSS nm1p2_svt_lp W=150n L=60n
-MM8 CLK CK VDD VDD pm1p2_svt_lp W=190n L=60n
-MM9 CLKB CLK VSS VSS nm1p2_svt_lp W=150n L=60n
-MM10 CLKB CLK VDD VDD pm1p2_svt_lp W=190n L=60n
+XI2 net46 CKP CKN VDD VSS net33 TSINV pl=6E-08 pw=1.5E-07 nl=6E-08 nw=1.5E-07
+XXI6 D CKN CKP VDD VSS net33 TSINV pl=6E-08 pw=2.8E-07 nl=6E-08 nw=2E-07
+XI3 net46 CKP CKN VDD VSS net25 TSINV pl=6E-08 pw=3E-07 nl=6E-08 nw=2.2E-07
+XI4 net9 CKN CKP VDD VSS net25 TSINV pl=6E-08 pw=1.5E-07 nl=6E-08 nw=1.5E-07
+XI1 net33 VDD VSS net46 INV pl=6E-08 pw=2.8E-07 nl=6E-08 nw=2E-07
+XI0 CKN VDD VSS CKP INV pl=6E-08 pw=2.8E-07 nl=6E-08 nw=2E-07
+XXI12 net25 VDD VSS Q INV pl=6E-08 pw=3E-07 nl=6E-08 nw=2.4E-07
+XXI10 net25 VDD VSS net9 INV pl=6E-08 pw=3E-07 nl=6E-08 nw=2.2E-07
+XI5 net9 VDD VSS QN INV pl=6E-08 pw=3E-07 nl=6E-08 nw=2.4E-07
+XXI4 CK VDD VSS CKN INV pl=6E-08 pw=2.8E-07 nl=6E-08 nw=2E-07
 
 * Load capacitances
 CL_Q Q VSS 10f

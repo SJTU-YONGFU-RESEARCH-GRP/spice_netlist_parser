@@ -18,7 +18,7 @@ CURRENT_NAME.27: /I[0-9][A-Za-z0-9_]*/
 MOSFET_NAME.32: /M[A-Za-z0-9_]+/
 BJT_NAME.27: /Q[0-9][A-Za-z0-9_]*/
 DIODE_NAME.27: /D[0-9][A-Za-z0-9_]*/
-SUBCKT_INST_NAME.28: /X[A-Za-z0-9_]+/
+SUBCKT_INST_NAME.29: /X[A-Za-z0-9_]+/
 
 // Fallback component name (must come after specific primitives)
 COMPONENT_NAME.5: /[RCLVIMQDX][A-Za-z0-9_]{3,}/
@@ -34,12 +34,14 @@ statement: component_line
          | param_line
          | subckt_line
          | control_line
+         | ends_line
+         | tran_line
 
 // Component definitions (fixed arity) - order matters for precedence
-component_line: mosfet_component
+component_line: subckt_instance
+             | mosfet_component
              | bjt_component
              | diode_component
-             | subckt_instance
              | two_node_component
 
 node2: node node
@@ -47,21 +49,21 @@ node3: node node node
 node4: node node node node
 node5: node node node node node
 node_list: node+
+subckt_node: SIGNED_NUMBER | ZERO | NODE_NAME | SUBCKT_NAME | VOLTAGE_NAME | CAPACITOR_NAME
+subckt_node_list: subckt_node+
 
 two_node_component: (RESISTOR_NAME | CAPACITOR_NAME | INDUCTOR_NAME | VOLTAGE_NAME | CURRENT_NAME | COMPONENT_NAME) node2 component_body?
 diode_component: DIODE_NAME node2 MODEL_NAME param_or_value*
-mosfet_component: MOSFET_NAME node node node node MODEL_NAME param_or_value*
-                | MOSFET_NAME node node node node node (MODEL_NAME | NODE_NAME | SUBCKT_NAME) param_or_value*
+mosfet_component: MOSFET_NAME node node node node (MODEL_NAME | NODE_NAME) param_or_value*
 bjt_component: BJT_NAME node3 MODEL_NAME param_or_value*
              | BJT_NAME node4 MODEL_NAME param_or_value*
-subckt_instance: SUBCKT_INST_NAME node_list "/" MODEL_NAME param_or_value*
-                | SUBCKT_INST_NAME node_list MODEL_NAME param_or_value*
+subckt_instance: SUBCKT_INST_NAME subckt_node_list ["/"] MODEL_NAME param_or_value*
 
 // Subcircuit names
 SUBCKT_NAME.26: /(?![X])[A-Z][A-Za-z0-9_]+/
 
 // Model names (require uppercase letter to distinguish from simple node names)
-MODEL_NAME.27: /[A-Za-z_]*([A-Z]|[0-9_])[A-Za-z0-9_]+/
+MODEL_NAME.27: /[A-Z]{3,}[A-Za-z0-9_]*|[A-Za-z_]*[A-Z][a-z][A-Za-z0-9_]*|[a-z][A-Za-z0-9_]*_[A-Za-z0-9_]+/
 
 // Parameter names (short) only when immediately followed by '='
 PARAM_NAME.3: /(?![RCLVIMQDX][0-9])(?![A-Za-z_][A-Za-z0-9_]*\()[A-Za-z_][A-Za-z0-9_]{0,3}(?==)/
@@ -106,7 +108,9 @@ option_line: ".OPTION" parameter*
 param_line: ".PARAM" parameter*
 
 // Subcircuit definition
-subckt_line: ".SUBCKT" (SUBCKT_NAME | MODEL_NAME) node_list statement* [".ENDS"]
+subckt_line: ".SUBCKT" (SUBCKT_NAME | MODEL_NAME) node_list statement*
+ends_line: ".ENDS"
+tran_line: ".TRAN" /[^ \t\r\n]+/ /[^ \t\r\n]+/
 
 // Control statements
 control_line: ".OP" | ".DC" | ".AC" | ".TRAN" | ".END"
