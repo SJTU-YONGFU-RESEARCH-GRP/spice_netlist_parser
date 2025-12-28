@@ -1,0 +1,47 @@
+# 2025-12-28T21:24:51+08:00
+# Input: /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl
+# JSON output: /mnt/d/proj/spice_netlist_parser/examples/logic//NOR2.json
+# Compare output: /mnt/d/proj/spice_netlist_parser/examples/logic//NOR2.json
+# Command (parse): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl" --format json --output "/mnt/d/proj/spice_netlist_parser/examples/logic//NOR2.json" 
+------------------------------------------------------------
+[0;34mSPICE Netlist Parser[0m
+====================
+
+Note: Not in a virtual environment. Consider using one.
+
+[0;32mRunning parser...[0m
+
+2025-12-28 21:24:52,273 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl
+2025-12-28 21:24:52,282 - spice_netlist_parser.parser - INFO - Successfully parsed 4 components, 0 models
+Successfully parsed: /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl
+Title: Untitled
+Components: 4
+Models: 0
+Nodes: 6
+
+Output written to /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.json
+
+# Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl" --compare "/mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples/logic//NOR2.json" 
+------------------------------------------------------------
+[0;34mSPICE Netlist Parser[0m
+====================
+
+Note: Not in a virtual environment. Consider using one.
+
+[0;34mNetlist comparison[0m
+-------------------
+[0;32mComparing:[0m /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl  <->  /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl
+
+2025-12-28 21:24:53,150 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl
+2025-12-28 21:24:53,159 - spice_netlist_parser.parser - INFO - Successfully parsed 4 components, 0 models
+2025-12-28 21:24:53,159 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl
+2025-12-28 21:24:53,166 - spice_netlist_parser.parser - INFO - Successfully parsed 4 components, 0 models
+Report written to /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.json
+
+[0;32mRunning parser...[0m
+
+2025-12-28 21:24:54,598 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl
+2025-12-28 21:24:54,607 - spice_netlist_parser.parser - INFO - Successfully parsed 4 components, 0 models
+2025-12-28 21:24:54,607 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.cdl
+2025-12-28 21:24:54,614 - spice_netlist_parser.parser - INFO - Successfully parsed 4 components, 0 models
+Comparison report written to /mnt/d/proj/spice_netlist_parser/examples/logic/NOR2.json

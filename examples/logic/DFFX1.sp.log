@@ -1,0 +1,47 @@
+# 2025-12-28T21:24:10+08:00
+# Input: /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp
+# JSON output: /mnt/d/proj/spice_netlist_parser/examples/logic//DFFX1.json
+# Compare output: /mnt/d/proj/spice_netlist_parser/examples/logic//DFFX1.json
+# Command (parse): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp" --format json --output "/mnt/d/proj/spice_netlist_parser/examples/logic//DFFX1.json" 
+------------------------------------------------------------
+[0;34mSPICE Netlist Parser[0m
+====================
+
+Note: Not in a virtual environment. Consider using one.
+
+[0;32mRunning parser...[0m
+
+2025-12-28 21:24:11,486 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp
+2025-12-28 21:24:11,496 - spice_netlist_parser.parser - INFO - Successfully parsed 22 components, 0 models
+Successfully parsed: /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp
+Title: Untitled
+Components: 22
+Models: 0
+Nodes: 17
+
+Output written to /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.json
+
+# Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp" --compare "/mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples/logic//DFFX1.json" 
+------------------------------------------------------------
+[0;34mSPICE Netlist Parser[0m
+====================
+
+Note: Not in a virtual environment. Consider using one.
+
+[0;34mNetlist comparison[0m
+-------------------
+[0;32mComparing:[0m /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp  <->  /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp
+
+2025-12-28 21:24:12,358 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp
+2025-12-28 21:24:12,370 - spice_netlist_parser.parser - INFO - Successfully parsed 22 components, 0 models
+2025-12-28 21:24:12,371 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp
+2025-12-28 21:24:12,381 - spice_netlist_parser.parser - INFO - Successfully parsed 22 components, 0 models
+Report written to /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.json
+
+[0;32mRunning parser...[0m
+
+2025-12-28 21:24:13,743 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp
+2025-12-28 21:24:13,754 - spice_netlist_parser.parser - INFO - Successfully parsed 22 components, 0 models
+2025-12-28 21:24:13,755 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.sp
+2025-12-28 21:24:13,766 - spice_netlist_parser.parser - INFO - Successfully parsed 22 components, 0 models
+Comparison report written to /mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.json

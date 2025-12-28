@@ -1,0 +1,45 @@
+{
+  "left_path": "/mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.cdl",
+  "right_path": "/mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.cdl",
+  "left": {
+    "title": "Untitled",
+    "components": 4,
+    "nodes": 6,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "M": 4
+    }
+  },
+  "right": {
+    "title": "Untitled",
+    "components": 4,
+    "nodes": 6,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "M": 4
+    }
+  },
+  "verification": {
+    "components_left": 4,
+    "components_right": 4,
+    "components_compared": 4,
+    "missing_components": [],
+    "extra_components": [],
+    "components_with_type_diffs": 0,
+    "components_with_node_diffs": 0,
+    "components_with_model_diffs": 0,
+    "components_with_parameter_diffs": 0,
+    "includes_equal": true,
+    "options_equal": true,
+    "models_equal": true,
+    "connectivity_fingerprint_left": "1524e411889b",
+    "connectivity_fingerprint_right": "1524e411889b",
+    "sizing_fingerprint_left": "95efbb6336b0",
+    "sizing_fingerprint_right": "95efbb6336b0"
+  },
+  "differences": []
+}

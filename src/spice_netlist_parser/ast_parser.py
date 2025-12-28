@@ -19,6 +19,7 @@ from .ast_nodes import (
 )
 from .exceptions import ParseError
 from .grammar import SPICE_GRAMMAR
+from .logging_config import get_logger
 
 
 class ASTBuilder:
@@ -154,7 +155,8 @@ class ASTBuilder:
                         continue
                     collect_body(ch, in_body=in_body)
                 elif isinstance(ch, Token) and in_body:
-                    if ch.type == "MODEL_NAME" and model is None:
+                    if ch.type in {"MODEL_NAME", "SUBCKT_NAME"} and model is None:
+                        # For subcircuit instances, SUBCKT_NAME is the model
                         model = ch.value
                     elif ch.type in {"SIGNED_NUMBER", "FUNCTION_CALL", "STRING"}:
                         value_node = self._build_value_from_token(ch)  # type: ignore[assignment]
@@ -174,7 +176,11 @@ class ASTBuilder:
 
         for child in tree.children:
             if isinstance(child, Token):
-                if child.type in {
+                if child.type == "SUBCKT_INST_NAME":
+                    # For subcircuit instances, use the instance name (e.g., XI0) as component name
+                    name = child.value
+                    comp_type = child.value[0].upper()
+                elif child.type in {
                     "COMPONENT_NAME",
                     "RESISTOR_NAME",
                     "CAPACITOR_NAME",
@@ -184,11 +190,11 @@ class ASTBuilder:
                     "MOSFET_NAME",
                     "BJT_NAME",
                     "DIODE_NAME",
-                    "SUBCKT_INST_NAME",
-                    "SUBCKT_NAME",
                 } or child.type.endswith("_NAME"):
-                    name = child.value
-                    comp_type = child.value[0].upper()
+                    # Only set name/type if not already set (to avoid overwriting SUBCKT_INST_NAME)
+                    if not name:
+                        name = child.value
+                        comp_type = child.value[0].upper()
             elif isinstance(child, Tree):
                 # Nodes can be under node2/node3/node4/node_list (all contain `node` subtrees).
                 collect_nodes(child)
@@ -454,6 +460,7 @@ class SpiceASTParser:
 
         self.builder = ASTBuilder()
         self.filename = ""
+        self.logger = get_logger("ast_parser")
 
     def parse_file(self, filepath: str | Path) -> NetlistNode:
         """Parse a SPICE netlist file into an AST.
@@ -490,65 +497,107 @@ class SpiceASTParser:
         Returns:
             Root NetlistNode of the AST
 
-        Raises:
-            ParseError: If parsing fails
+        Note:
+            This method continues parsing even when individual lines fail,
+            logging warnings for errors instead of raising exceptions.
         """
-        try:
-            # Preprocess to handle continuation lines
-            processed_text = self._preprocess_text(netlist_text)
+        # Preprocess to handle continuation lines
+        processed_text = self._preprocess_text(netlist_text)
+        processed_lines = processed_text.splitlines()
 
-            # First, try line-by-line component parsing (skipping directives).
-            statement_nodes: list[ASTNode] = []
-            failed = False
-            for raw_line in processed_text.splitlines():
-                line = raw_line.strip()
-                if not line:
-                    continue
-                if line.startswith("."):
-                    # Skip directives in this fallback path.
-                    continue
-                try:
-                    comp_tree = self.parser.parse(line, start="component_line")
-                    component_node = self.builder.build_component(comp_tree)
-                    statement_nodes.append(component_node)
-                except lark.exceptions.LarkError:
-                    failed = True
-                    break
+        # Try line-by-line component parsing (skipping directives).
+        statement_nodes: list[ASTNode] = []
+        errors: list[str] = []
+        
+        for line_num, raw_line in enumerate(processed_lines, start=1):
+            line = raw_line.strip()
+            if not line:
+                continue
+            if line.startswith("."):
+                # Skip directives for now - they'll be handled in full parse if needed
+                # Directives are typically not critical for component extraction
+                continue
+            
+            # Try to parse as component
+            try:
+                comp_tree = self.parser.parse(line, start="component_line")
+                component_node = self.builder.build_component(comp_tree)
+                statement_nodes.append(component_node)
+            except lark.exceptions.LarkError as e:
+                error_msg = f"Line {line_num}: Failed to parse component - {e}"
+                self.logger.warning(error_msg)
+                errors.append(error_msg)
+                # Continue parsing other lines
 
-            if not failed and statement_nodes:
-                return NetlistNode(
-                    node_type=NodeType.NETLIST,
-                    line_number=1,
-                    position=0,
-                    title="Untitled",
-                    statements=statement_nodes,
+        # If we have any successfully parsed statements, return them
+        if statement_nodes:
+            if errors:
+                self.logger.warning(
+                    f"Parsed {len(statement_nodes)} statements with {len(errors)} errors. "
+                    f"Some lines were skipped due to parsing errors."
                 )
+            return NetlistNode(
+            node_type=NodeType.NETLIST,
+            line_number=1,
+            position=0,
+            title="Untitled",
+            statements=statement_nodes,
+        )
 
-            # Fallback to full parse using the grammar start rule.
+        # Fallback: try full parse, but catch errors gracefully
+        try:
             tree = self.parser.parse(processed_text, start="start")
             return self.builder.build_netlist(tree)
-
         except lark.exceptions.UnexpectedToken as e:
             line_num = getattr(e, "line", None) or self._find_error_line(
                 netlist_text, str(e)
             )
-            msg = f"Unexpected token at line {line_num}: {e}"
-            raise ParseError(msg, filename=self.filename, line_number=line_num) from e
+            error_msg = f"Line {line_num}: Unexpected token - {e}"
+            self.logger.warning(error_msg)
+            # Return empty netlist if full parse fails
+            return NetlistNode(
+                node_type=NodeType.NETLIST,
+                line_number=1,
+                position=0,
+                title="Untitled",
+                statements=[],
+            )
         except lark.exceptions.UnexpectedCharacters as e:
             line_num = getattr(e, "line", None) or self._find_error_line(
                 netlist_text, str(e)
             )
-            msg = f"Unexpected character at line {line_num}: {e}"
-            raise ParseError(msg, filename=self.filename, line_number=line_num) from e
+            error_msg = f"Line {line_num}: Unexpected character - {e}"
+            self.logger.warning(error_msg)
+            return NetlistNode(
+                node_type=NodeType.NETLIST,
+                line_number=1,
+                position=0,
+                title="Untitled",
+                statements=[],
+            )
         except lark.exceptions.LarkError as e:
             line_num = getattr(e, "line", None) or self._find_error_line(
                 netlist_text, str(e)
             )
-            msg = f"Parse error at line {line_num}: {e}"
-            raise ParseError(msg, filename=self.filename, line_number=line_num) from e
+            error_msg = f"Line {line_num}: Parse error - {e}"
+            self.logger.warning(error_msg)
+            return NetlistNode(
+                node_type=NodeType.NETLIST,
+                line_number=1,
+                position=0,
+                title="Untitled",
+                statements=[],
+            )
         except Exception as e:
-            msg = f"Unexpected error during parsing: {e}"
-            raise ParseError(msg, filename=self.filename) from e
+            error_msg = f"Unexpected error during parsing: {e}"
+            self.logger.warning(error_msg)
+            return NetlistNode(
+                node_type=NodeType.NETLIST,
+                line_number=1,
+                position=0,
+                title="Untitled",
+                statements=[],
+            )
 
     def _preprocess_file(self, file_handle: TextIO) -> str:
         """Preprocess file to handle continuation lines and filter comments.
@@ -659,16 +708,18 @@ class SpiceASTParser:
         for line in lines:
             # Check if line is a subcircuit instance (starts with X) and doesn't have '/'
             if re.match(r'^X[A-Za-z0-9_]+\s+', line) and '/' not in line:
-                # Find MODEL_NAME (3+ uppercase chars or has underscore) followed by PARAM_ASSIGN
-                # Insert '/' before the MODEL_NAME
-                # Pattern: ... <MODEL_NAME> <param>=...
                 parts = line.split()
+                # Find the subcircuit name: it's the first token that:
+                # 1. Starts with uppercase letter (not X)
+                # 2. Is followed by a PARAM_ASSIGN (contains '=')
+                # 3. Matches SUBCKT_NAME pattern: [A-Z][A-Za-z0-9_]+
                 for i in range(len(parts) - 1, 0, -1):
-                    # Check if this part looks like MODEL_NAME (3+ uppercase or has underscore)
-                    if re.match(r'^[A-Z]{3,}[A-Za-z0-9_]*$', parts[i]) or '_' in parts[i]:
-                        # Check if next part is PARAM_ASSIGN
+                    part = parts[i]
+                    # Check if this part looks like a subcircuit name (starts with uppercase, not X)
+                    if re.match(r'^[A-Z][A-Za-z0-9_]+$', part) and not part.startswith('X'):
+                        # Check if next part is PARAM_ASSIGN (contains '=')
                         if i + 1 < len(parts) and '=' in parts[i + 1]:
-                            # Insert '/' before this MODEL_NAME
+                            # Insert '/' before this subcircuit name
                             parts.insert(i, '/')
                             line = ' '.join(parts)
                             break

@@ -1,0 +1,45 @@
+{
+  "left_path": "/mnt/d/proj/spice_netlist_parser/examples/logic/XOR2.cdl",
+  "right_path": "/mnt/d/proj/spice_netlist_parser/examples/logic/XOR2.cdl",
+  "left": {
+    "title": "Untitled",
+    "components": 5,
+    "nodes": 8,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "X": 5
+    }
+  },
+  "right": {
+    "title": "Untitled",
+    "components": 5,
+    "nodes": 8,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "X": 5
+    }
+  },
+  "verification": {
+    "components_left": 5,
+    "components_right": 5,
+    "components_compared": 5,
+    "missing_components": [],
+    "extra_components": [],
+    "components_with_type_diffs": 0,
+    "components_with_node_diffs": 0,
+    "components_with_model_diffs": 0,
+    "components_with_parameter_diffs": 0,
+    "includes_equal": true,
+    "options_equal": true,
+    "models_equal": true,
+    "connectivity_fingerprint_left": "a5dc37fd3410",
+    "connectivity_fingerprint_right": "a5dc37fd3410",
+    "sizing_fingerprint_left": "37c67653b4b2",
+    "sizing_fingerprint_right": "37c67653b4b2"
+  },
+  "differences": []
+}

@@ -1,0 +1,47 @@
+{
+  "left_path": "/mnt/d/proj/spice_netlist_parser/examples/logic/OR2.cdl",
+  "right_path": "/mnt/d/proj/spice_netlist_parser/examples/logic/OR2.cdl",
+  "left": {
+    "title": "Untitled",
+    "components": 5,
+    "nodes": 7,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "M": 4,
+      "X": 1
+    }
+  },
+  "right": {
+    "title": "Untitled",
+    "components": 5,
+    "nodes": 7,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "M": 4,
+      "X": 1
+    }
+  },
+  "verification": {
+    "components_left": 5,
+    "components_right": 5,
+    "components_compared": 5,
+    "missing_components": [],
+    "extra_components": [],
+    "components_with_type_diffs": 0,
+    "components_with_node_diffs": 0,
+    "components_with_model_diffs": 0,
+    "components_with_parameter_diffs": 0,
+    "includes_equal": true,
+    "options_equal": true,
+    "models_equal": true,
+    "connectivity_fingerprint_left": "c059a2001303",
+    "connectivity_fingerprint_right": "c059a2001303",
+    "sizing_fingerprint_left": "129850611a3e",
+    "sizing_fingerprint_right": "129850611a3e"
+  },
+  "differences": []
+}

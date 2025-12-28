@@ -55,9 +55,10 @@ subckt_node_list: subckt_node+
 two_node_component: (RESISTOR_NAME | CAPACITOR_NAME | INDUCTOR_NAME | VOLTAGE_NAME | CURRENT_NAME | COMPONENT_NAME) node2 component_body?
 diode_component: DIODE_NAME node2 MODEL_NAME param_or_value*
 mosfet_component: MOSFET_NAME node node node node (MODEL_NAME | NODE_NAME) param_or_value*
+                | MOSFET_NAME node node node node node (MODEL_NAME | NODE_NAME) param_or_value*
 bjt_component: BJT_NAME node3 MODEL_NAME param_or_value*
              | BJT_NAME node4 MODEL_NAME param_or_value*
-subckt_instance: SUBCKT_INST_NAME subckt_node_list ["/"] MODEL_NAME param_or_value*
+subckt_instance: SUBCKT_INST_NAME subckt_node_list ["/"] (MODEL_NAME | SUBCKT_NAME) param_or_value*
 
 // Subcircuit names
 SUBCKT_NAME.26: /(?![X])[A-Z][A-Za-z0-9_]+/

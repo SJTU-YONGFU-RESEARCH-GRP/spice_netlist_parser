@@ -1,0 +1,47 @@
+# 2025-12-28T21:24:17+08:00
+# Input: /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp
+# JSON output: /mnt/d/proj/spice_netlist_parser/examples/logic//NAND2.json
+# Compare output: /mnt/d/proj/spice_netlist_parser/examples/logic//NAND2.json
+# Command (parse): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp" --format json --output "/mnt/d/proj/spice_netlist_parser/examples/logic//NAND2.json" 
+------------------------------------------------------------
+[0;34mSPICE Netlist Parser[0m
+====================
+
+Note: Not in a virtual environment. Consider using one.
+
+[0;32mRunning parser...[0m
+
+2025-12-28 21:24:19,635 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp
+2025-12-28 21:24:19,648 - spice_netlist_parser.parser - INFO - Successfully parsed 9 components, 0 models
+Successfully parsed: /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp
+Title: Untitled
+Components: 9
+Models: 0
+Nodes: 7
+
+Output written to /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.json
+
+# Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp" --compare "/mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples/logic//NAND2.json" 
+------------------------------------------------------------
+[0;34mSPICE Netlist Parser[0m
+====================
+
+Note: Not in a virtual environment. Consider using one.
+
+[0;34mNetlist comparison[0m
+-------------------
+[0;32mComparing:[0m /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp  <->  /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp
+
+2025-12-28 21:24:20,630 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp
+2025-12-28 21:24:20,643 - spice_netlist_parser.parser - INFO - Successfully parsed 9 components, 0 models
+2025-12-28 21:24:20,644 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp
+2025-12-28 21:24:20,653 - spice_netlist_parser.parser - INFO - Successfully parsed 9 components, 0 models
+Report written to /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.json
+
+[0;32mRunning parser...[0m
+
+2025-12-28 21:24:22,229 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp
+2025-12-28 21:24:22,242 - spice_netlist_parser.parser - INFO - Successfully parsed 9 components, 0 models
+2025-12-28 21:24:22,242 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.sp
+2025-12-28 21:24:22,253 - spice_netlist_parser.parser - INFO - Successfully parsed 9 components, 0 models
+Comparison report written to /mnt/d/proj/spice_netlist_parser/examples/logic/NAND2.json

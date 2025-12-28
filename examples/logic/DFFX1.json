@@ -1,0 +1,47 @@
+{
+  "left_path": "/mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.cdl",
+  "right_path": "/mnt/d/proj/spice_netlist_parser/examples/logic/DFFX1.cdl",
+  "left": {
+    "title": "Untitled",
+    "components": 16,
+    "nodes": 16,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "M": 6,
+      "X": 10
+    }
+  },
+  "right": {
+    "title": "Untitled",
+    "components": 16,
+    "nodes": 16,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "M": 6,
+      "X": 10
+    }
+  },
+  "verification": {
+    "components_left": 16,
+    "components_right": 16,
+    "components_compared": 14,
+    "missing_components": [],
+    "extra_components": [],
+    "components_with_type_diffs": 0,
+    "components_with_node_diffs": 0,
+    "components_with_model_diffs": 0,
+    "components_with_parameter_diffs": 0,
+    "includes_equal": true,
+    "options_equal": true,
+    "models_equal": true,
+    "connectivity_fingerprint_left": "8b16ae4f5734",
+    "connectivity_fingerprint_right": "8b16ae4f5734",
+    "sizing_fingerprint_left": "166d352952c6",
+    "sizing_fingerprint_right": "166d352952c6"
+  },
+  "differences": []
+}

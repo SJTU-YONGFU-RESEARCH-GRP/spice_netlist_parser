@@ -1,0 +1,47 @@
+# 2025-12-28T21:24:13+08:00
+# Input: /mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp
+# JSON output: /mnt/d/proj/spice_netlist_parser/examples/logic//INV.json
+# Compare output: /mnt/d/proj/spice_netlist_parser/examples/logic//INV.json
+# Command (parse): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp" --format json --output "/mnt/d/proj/spice_netlist_parser/examples/logic//INV.json" 
+------------------------------------------------------------
+[0;34mSPICE Netlist Parser[0m
+====================
+
+Note: Not in a virtual environment. Consider using one.
+
+[0;32mRunning parser...[0m
+
+2025-12-28 21:24:15,271 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp
+2025-12-28 21:24:15,281 - spice_netlist_parser.parser - INFO - Successfully parsed 6 components, 0 models
+Successfully parsed: /mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp
+Title: Untitled
+Components: 6
+Models: 0
+Nodes: 5
+
+Output written to /mnt/d/proj/spice_netlist_parser/examples/logic/INV.json
+
+# Command (compare): /mnt/d/proj/spice_netlist_parser/netlist_parser.sh "/mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp" --compare "/mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp" --compare-format json --compare-output "/mnt/d/proj/spice_netlist_parser/examples/logic//INV.json" 
+------------------------------------------------------------
+[0;34mSPICE Netlist Parser[0m
+====================
+
+Note: Not in a virtual environment. Consider using one.
+
+[0;34mNetlist comparison[0m
+-------------------
+[0;32mComparing:[0m /mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp  <->  /mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp
+
+2025-12-28 21:24:16,144 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp
+2025-12-28 21:24:16,153 - spice_netlist_parser.parser - INFO - Successfully parsed 6 components, 0 models
+2025-12-28 21:24:16,154 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp
+2025-12-28 21:24:16,161 - spice_netlist_parser.parser - INFO - Successfully parsed 6 components, 0 models
+Report written to /mnt/d/proj/spice_netlist_parser/examples/logic/INV.json
+
+[0;32mRunning parser...[0m
+
+2025-12-28 21:24:17,794 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp
+2025-12-28 21:24:17,803 - spice_netlist_parser.parser - INFO - Successfully parsed 6 components, 0 models
+2025-12-28 21:24:17,804 - spice_netlist_parser.parser - INFO - Parsing file: /mnt/d/proj/spice_netlist_parser/examples/logic/INV.sp
+2025-12-28 21:24:17,811 - spice_netlist_parser.parser - INFO - Successfully parsed 6 components, 0 models
+Comparison report written to /mnt/d/proj/spice_netlist_parser/examples/logic/INV.json

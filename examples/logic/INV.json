@@ -1,0 +1,45 @@
+{
+  "left_path": "/mnt/d/proj/spice_netlist_parser/examples/logic/INV.cdl",
+  "right_path": "/mnt/d/proj/spice_netlist_parser/examples/logic/INV.cdl",
+  "left": {
+    "title": "Untitled",
+    "components": 2,
+    "nodes": 4,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "M": 2
+    }
+  },
+  "right": {
+    "title": "Untitled",
+    "components": 2,
+    "nodes": 4,
+    "models": 0,
+    "includes": 0,
+    "options": 0,
+    "component_breakdown": {
+      "M": 2
+    }
+  },
+  "verification": {
+    "components_left": 2,
+    "components_right": 2,
+    "components_compared": 2,
+    "missing_components": [],
+    "extra_components": [],
+    "components_with_type_diffs": 0,
+    "components_with_node_diffs": 0,
+    "components_with_model_diffs": 0,
+    "components_with_parameter_diffs": 0,
+    "includes_equal": true,
+    "options_equal": true,
+    "models_equal": true,
+    "connectivity_fingerprint_left": "2b09b33c6a6d",
+    "connectivity_fingerprint_right": "2b09b33c6a6d",
+    "sizing_fingerprint_left": "7f45277741d5",
+    "sizing_fingerprint_right": "7f45277741d5"
+  },
+  "differences": []
+}
