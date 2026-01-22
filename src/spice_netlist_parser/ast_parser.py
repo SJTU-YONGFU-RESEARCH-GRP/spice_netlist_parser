@@ -201,6 +201,44 @@ class ASTBuilder:
                 # Body can be either a `component_body` subtree or raw (MODEL_NAME + param_or_value*)
                 collect_body(child, in_body=False)
 
+        # Post-processing: Check if an X component is actually a MOSFET
+        # This handles cases where preprocessing converted X_ to M_ but grammar still matched as subcircuit
+        # or cases where X_ components with MOSFET characteristics weren't converted during preprocessing
+        if comp_type == "X" and len(nodes) >= 4:
+            # Check if it has MOSFET characteristics: PMOS/NMOS model or W=/L= parameters
+            has_mos_model = model and model.upper() in ("PMOS", "NMOS")
+            
+            # Check parameters for W=/L= (handles both ParameterNode and PARAM_ASSIGN tokens)
+            has_mos_params = False
+            for param in parameters:
+                param_name_upper = param.name.upper()
+                param_value_str = str(param.value).upper()
+                if param_name_upper in ("W", "L") or "W=" in param_value_str or "L=" in param_value_str:
+                    has_mos_params = True
+                    break
+            
+            # Also check if any child tokens are PARAM_ASSIGN with W=/L=
+            # This catches cases where PARAM_ASSIGN tokens weren't converted to ParameterNode
+            # Recursively search the tree for PARAM_ASSIGN tokens
+            if not has_mos_params:
+                def check_tree_for_mos_params(subtree: Tree) -> bool:
+                    """Recursively check tree for MOSFET parameters."""
+                    for ch in subtree.children:
+                        if isinstance(ch, Token):
+                            if ch.type == "PARAM_ASSIGN" and ("W=" in ch.value.upper() or "L=" in ch.value.upper()):
+                                return True
+                        elif isinstance(ch, Tree):
+                            if check_tree_for_mos_params(ch):
+                                return True
+                    return False
+                
+                if check_tree_for_mos_params(tree):
+                    has_mos_params = True
+            
+            # If it looks like a MOSFET, reclassify it
+            if has_mos_model or has_mos_params:
+                comp_type = "M"
+
         return ComponentNode(
             node_type=NodeType.COMPONENT,
             line_number=self.line_number,
@@ -627,6 +665,15 @@ class SpiceASTParser:
                     lines.append(current_line)
                     current_line = ""
                 continue
+            
+            # Normalize SPICE directives to uppercase (e.g., .model -> .MODEL)
+            # This ensures case-insensitive directive handling
+            if normalized.startswith("."):
+                directive_match = re.match(r'^\.([a-z]+)', normalized, re.IGNORECASE)
+                if directive_match:
+                    directive = directive_match.group(1).upper()
+                    # Replace lowercase directive with uppercase
+                    normalized = "." + directive + normalized[len("." + directive_match.group(1)):]
 
             # Handle continuation lines (starting with +), allowing leading whitespace
             if normalized.startswith("+"):
@@ -644,7 +691,46 @@ class SpiceASTParser:
         if current_line:
             lines.append(current_line)
 
-        return "\n".join(lines)
+        # Apply X_ to M_ conversion for flattened MOSFET designs
+        processed_lines = []
+        for line in lines:
+            # Check if line is an X_ prefixed component (allow dots in names for hierarchical names)
+            if re.match(r'^X[A-Za-z0-9_.]+\s+', line) and '/' not in line:
+                parts = line.split()
+                
+                # For flattened designs, ALL X_ prefixed components should be MOSFETs
+                # Detect MOSFET by checking for PMOS/NMOS model type + W= or L= parameters
+                # This is more permissive: if it has PMOS/NMOS and MOSFET parameters, convert it
+                has_mos_model = False
+                has_w_param = False
+                has_l_param = False
+                
+                for part in parts:
+                    part_upper = part.upper()
+                    if part_upper in ("PMOS", "NMOS"):
+                        has_mos_model = True
+                    elif '=' in part:
+                        if part_upper.startswith('W='):
+                            has_w_param = True
+                        elif part_upper.startswith('L='):
+                            has_l_param = True
+                
+                # If it has PMOS/NMOS and W= or L= parameters, it's a MOSFET - convert it
+                # For flattened designs, also check if it has transistor-like format (enough nodes + params)
+                is_transistor_format = len(parts) >= 6  # name + 4 nodes + model/type + params
+                if has_mos_model and (has_w_param or has_l_param):
+                    # Convert X_ prefix to M_ prefix
+                    parts[0] = 'M' + parts[0][1:]  # Replace X with M
+                    line = ' '.join(parts)
+                elif is_transistor_format and (has_w_param or has_l_param):
+                    # Has MOSFET parameters (W=/L=) but may not have explicit PMOS/NMOS keyword
+                    # Still convert it - likely a MOSFET in flattened design
+                    parts[0] = 'M' + parts[0][1:]
+                    line = ' '.join(parts)
+            
+            processed_lines.append(line)
+
+        return "\n".join(processed_lines)
 
     def _preprocess_text(self, text: str) -> str:
         """Preprocess text to handle continuation lines and filter comments.
@@ -674,6 +760,15 @@ class SpiceASTParser:
                     lines.append(current_line)
                     current_line = ""
                 continue
+            
+            # Normalize SPICE directives to uppercase (e.g., .model -> .MODEL)
+            # This ensures case-insensitive directive handling
+            if normalized.startswith("."):
+                directive_match = re.match(r'^\.([a-z]+)', normalized, re.IGNORECASE)
+                if directive_match:
+                    directive = directive_match.group(1).upper()
+                    # Replace lowercase directive with uppercase
+                    normalized = "." + directive + normalized[len("." + directive_match.group(1)):]
 
             # Skip title line: first non-empty, non-comment line that doesn't
             # start with a known statement/component designator.
@@ -702,27 +797,61 @@ class SpiceASTParser:
         if current_line:
             lines.append(current_line)
 
-        # Post-process: Add '/' separator to subcircuit instances that don't have it
-        import re
+        # Post-process: Handle X_ prefixed components
+        # 1. Convert X_ MOSFET instances to M_ format (Yosys flattened netlist format)
+        # 2. Add '/' separator to legitimate subcircuit instances
+        # Note: 're' is already imported at module level
         processed_lines = []
         for line in lines:
-            # Check if line is a subcircuit instance (starts with X) and doesn't have '/'
-            if re.match(r'^X[A-Za-z0-9_]+\s+', line) and '/' not in line:
+            # Check if line is an X_ prefixed component (allow dots in names for hierarchical names)
+            if re.match(r'^X[A-Za-z0-9_.]+\s+', line) and '/' not in line:
                 parts = line.split()
-                # Find the subcircuit name: it's the first token that:
-                # 1. Starts with uppercase letter (not X)
-                # 2. Is followed by a PARAM_ASSIGN (contains '=')
-                # 3. Matches SUBCKT_NAME pattern: [A-Z][A-Za-z0-9_]+
-                for i in range(len(parts) - 1, 0, -1):
-                    part = parts[i]
-                    # Check if this part looks like a subcircuit name (starts with uppercase, not X)
-                    if re.match(r'^[A-Z][A-Za-z0-9_]+$', part) and not part.startswith('X'):
-                        # Check if next part is PARAM_ASSIGN (contains '=')
-                        if i + 1 < len(parts) and '=' in parts[i + 1]:
-                            # Insert '/' before this subcircuit name
-                            parts.insert(i, '/')
-                            line = ' '.join(parts)
-                            break
+                
+                # For flattened designs, ALL X_ prefixed components should be MOSFETs
+                # Detect MOSFET by checking for PMOS/NMOS model type + W= or L= parameters
+                # This is more permissive: if it has PMOS/NMOS and MOSFET parameters, convert it
+                has_mos_model = False
+                has_w_param = False
+                has_l_param = False
+                
+                for part in parts:
+                    part_upper = part.upper()
+                    if part_upper in ("PMOS", "NMOS"):
+                        has_mos_model = True
+                    elif '=' in part:
+                        if part_upper.startswith('W='):
+                            has_w_param = True
+                        elif part_upper.startswith('L='):
+                            has_l_param = True
+                
+                # If it has PMOS/NMOS and W= or L= parameters, it's a MOSFET - convert it
+                # For flattened designs, also check if it has transistor-like format (enough nodes + params)
+                is_transistor_format = len(parts) >= 6  # name + 4 nodes + model/type + params
+                if has_mos_model and (has_w_param or has_l_param):
+                    # Convert X_ prefix to M_ prefix
+                    parts[0] = 'M' + parts[0][1:]  # Replace X with M
+                    line = ' '.join(parts)
+                elif is_transistor_format and (has_w_param or has_l_param):
+                    # Has MOSFET parameters (W=/L=) but may not have explicit PMOS/NMOS keyword
+                    # Still convert it - likely a MOSFET in flattened design
+                    parts[0] = 'M' + parts[0][1:]
+                    line = ' '.join(parts)
+                elif len(parts) >= 3:
+                    # Potential subcircuit instance - try to add '/' separator
+                    # Find the subcircuit name: it's the first token that:
+                    # 1. Starts with uppercase letter (not X)
+                    # 2. Is followed by a PARAM_ASSIGN (contains '=')
+                    # 3. Matches SUBCKT_NAME pattern: [A-Z][A-Za-z0-9_]+
+                    for i in range(len(parts) - 1, 0, -1):
+                        part = parts[i]
+                        # Check if this part looks like a subcircuit name (starts with uppercase, not X)
+                        if re.match(r'^[A-Z][A-Za-z0-9_]+$', part) and not part.startswith('X'):
+                            # Check if next part is PARAM_ASSIGN (contains '=')
+                            if i + 1 < len(parts) and '=' in parts[i + 1]:
+                                # Insert '/' before this subcircuit name
+                                parts.insert(i, '/')
+                                line = ' '.join(parts)
+                                break
             processed_lines.append(line)
 
         # Join with newlines to preserve statement boundaries.

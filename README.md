@@ -20,6 +20,9 @@ A robust, AST-based parser for SPICE netlist files with comprehensive analysis a
 - **Directive Support**: Handles .INCLUDE, .OPTION, .PARAM and other SPICE directives
 - **Unit Handling**: Automatic parsing of engineering unit suffixes (k, m, u, n, p, f)
 - **Continuation Lines**: Proper handling of SPICE continuation lines (+)
+- **Format Variations**: Supports Yosys-generated flattened netlists with X_ prefixed MOSFETs
+- **Node Name Support**: Handles hierarchical node names with dots and bracket notation (e.g., `a[0]`, `carries[31]`)
+- **Case-Insensitive Directives**: Automatically normalizes directive case (e.g., `.model` → `.MODEL`)
 - **Round-trip Validation**: Verify parser accuracy with parse → serialize → parse cycles
 - **Comparison Tools**: Compare netlists for structural and semantic differences
 - **Multiple Output Formats**: Text, JSON, and summary output formats
@@ -288,6 +291,50 @@ The pre-commit hooks include:
 # Run with additional arguments
 ./regression.sh --verbose
 ```
+
+## Format Variations and Compatibility
+
+The parser supports various SPICE format variations commonly found in real-world netlists:
+
+### Yosys-Generated Flattened Netlists
+
+The parser automatically handles Yosys-generated flattened netlists that use `X_` prefixes for MOSFET components. These are automatically converted to standard `M_` format during preprocessing.
+
+**Example:**
+```spice
+X_auto_simplemap.module_XN1_M1 node1 node2 node3 node4 PMOS W=2u L=0.18u
+```
+
+This is automatically converted to:
+```spice
+M_auto_simplemap.module_XN1_M1 node1 node2 node3 node4 PMOS W=2u L=0.18u
+```
+
+### Hierarchical Node Names
+
+The parser supports hierarchical node names with dots (e.g., `X_module.node`) and bracket notation for array indices (e.g., `a[0]`, `carries[31]`).
+
+**Examples:**
+```spice
+M1 X_auto_simplemap.cc_75_simplemap_bitop_238_n1_0 a[0] VDD VDD PMOS
+M2 node1 carries[31] node3 node4 NMOS
+```
+
+### MOSFET Type (PMOS/NMOS) Detection
+
+For flattened Yosys-style netlists, MOSFET type is determined **only** from the model token (the token immediately after the four drain/gate/source/bulk nodes). Node names are never used, so designs with exactly 800 PMOS and 800 NMOS instance lines report correct 50/50 counts. The helper `mosfet_type_from_line` in `spice_netlist_parser.mosfet_line` implements this rule.
+
+### Case-Insensitive Directives
+
+SPICE directives are automatically normalized to uppercase, so both `.model` and `.MODEL` are supported.
+
+**Example:**
+```spice
+.model NMOS NMOS (LEVEL=1 VTO=0.7)    ; Lowercase directive
+.MODEL PMOS PMOS (LEVEL=1 VTO=-0.7)   ; Uppercase directive (standard)
+```
+
+Both formats are automatically handled by the parser.
 
 ## Supported SPICE Syntax
 
