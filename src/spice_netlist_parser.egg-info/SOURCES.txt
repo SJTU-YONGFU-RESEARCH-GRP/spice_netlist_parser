@@ -11,6 +11,7 @@ src/spice_netlist_parser/grammar.py
 src/spice_netlist_parser/logging_config.py
 src/spice_netlist_parser/main.py
 src/spice_netlist_parser/models.py
+src/spice_netlist_parser/mosfet_line.py
 src/spice_netlist_parser/multi_file_parser.py
 src/spice_netlist_parser/parser.py
 src/spice_netlist_parser/roundtrip.py
@@ -41,6 +42,7 @@ tests/test_config.py
 tests/test_config_exceptions.py
 tests/test_main_cli.py
 tests/test_models.py
+tests/test_mosfet_line.py
 tests/test_parser_errors.py
 tests/test_parser_main_error_paths.py
 tests/test_roundtrip.py
