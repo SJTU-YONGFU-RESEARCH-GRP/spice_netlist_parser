@@ -37,7 +37,7 @@ dev = [
     "pytest-cov>=4.0",
     "ruff>=0.1.0",
     "mypy>=1.0",
-    "bandit[toml]>=1.7",
+    "bandit[toml]>=1.9.4",
     "pre-commit>=3.0",
 ]
 
